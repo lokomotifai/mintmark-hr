@@ -1,5 +1,7 @@
 # Contributing
 
+<sub><a href="CONTRIBUTING.tr.md">Türkçe</a></sub>
+
 Thank you for considering a contribution. This is a declaration-and-data
 repository, so most of what you will change is YAML rather than code.
 
@@ -51,7 +53,8 @@ headings, a banned promotional vocabulary, and no em dash or en dash anywhere.
 Quoted third-party text is exempted with a marker that carries a reason.
 
 `README.md` is canonical and `README.tr.md` is a full mirror, not a summary. A
-change to one without the other fails review.
+change to one without the other fails review. The same rule covers every other
+`.tr.md` mirror in this repository.
 
 ## What will be declined
 

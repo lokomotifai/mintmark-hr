@@ -64,6 +64,8 @@ kapsam hedefinin hepsini karşılıyor.
 > tahsis edilmiş numaralarla çakışabilir, çünkü Türkiye numaralandırma planı
 > kurgusal bir aralık ayırmaz. Bu veri sistemleri test etmek içindir. Hiçbir zaman
 > kimseye ulaşmak için değildir.
+> Bunun Türk veri koruma hukuku karşısında ne anlama gelip gelmediği
+> [docs/kvkk.tr.md](docs/kvkk.tr.md) dosyasında açıklanmıştır.
 
 ## Burada ne var, ne yok
 
@@ -149,11 +151,11 @@ mintmark verify ./run
 Üretildiği hâliyle bir işe alım notu:
 
 ```
-Aday degerlendirme notu. Aday Mustafa Çelik, basvurdugu pozisyon
-icin on_gorusme asamasinda degerlendirildi. Iletisim +90 597 216 26
-34, eposta kullanici8708.9268@example.net. Onceki isvereni Anka
-Lojistik. Teknik yetkinlik kismen karsiliyor olarak notlandi. Surec
-devam ediyor.
+Aday degerlendirme notu. Aday Mehmet Demir, basvurdugu pozisyon
+icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
+575 131 44 23, eposta kullanici4843.7421@example.net. Onceki
+isvereni Anka Lojistik. Teknik yetkinlik beklentiyi karsiliyor
+olarak notlandi. Surec sonraki asamaya gecti.
 ```
 
 Bu, [`samples/recruiter_note.jsonl`](samples/recruiter_note.jsonl) dosyasındaki
@@ -243,7 +245,8 @@ lexicons/           kurgusal işverenler, unvanlar ve birimler, denylist ve bu
 samples/            tür başına elli kayıt, sabit bir tohumdan yeniden üretilir
 vendor/             zorunlu CI çalışmalarının kullandığı çekirdek wheel, sağlama ile
 tests/              her iki sınır kontrolü dahil uygunluk paketi
-docs/               referans veri kümesi kaydı ve doğrulama kaydı
+docs/               referans veri kümesi kaydı, doğrulama kaydı ve bu paketin
+                    KVKK karşısında ne iddia edip etmediği
 ```
 
 ## Depoyu geliştirin
@@ -283,7 +286,11 @@ Apache-2.0. [LICENSE](LICENSE) ve [NOTICE](NOTICE) dosyalarına bakın. Lisans,
 Mintmark adı veya logosu üzerinde hiçbir hak vermez; [TRADEMARKS.md](TRADEMARKS.md)
 dosyasına bakın.
 
-Yayımlanacak referans veri kümeleri için önerilen veri lisansı CC0-1.0'dır ve
-hukuki teyit beklemektedir.
+Referans veri kümeleri **CC BY 4.0** ile lisanslıdır: ticari kullanım dahil her
+amaçla kullanabilirsiniz, kaynağı belirtmeniz yeterlidir. Her veri kümesi kendi
+atıf satırını `MINTMARK.json` içinde taşır ve `mintmark verify` bunu yazdırır;
+elle bir şey kurmanız gerekmez. Bakınız
+[LICENSE-DATASETS.md](LICENSE-DATASETS.md). Hukuki teyit beklemektedir; burada
+hiçbir şey bunu yerleşik olarak belirtmez.
 
 <p align="center"><sub>Mintmark ailesinin parçası: <a href="https://github.com/lokomotifai/mintmark">motor</a> · <a href="https://github.com/lokomotifai/mintmark-banking">bankacılık</a> · <a href="https://github.com/lokomotifai/mintmark-insurance">sigorta</a></sub></p>

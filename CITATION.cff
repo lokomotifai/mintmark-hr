@@ -1,0 +1,34 @@
+# Citation metadata, in Citation File Format 1.2.0.
+# GitHub renders this as "Cite this repository".
+#
+# No release has been published and there is no DOI. `version` names the
+# current unreleased version so a citation is unambiguous about what it saw.
+#
+# `license` is the code license. Datasets minted from this repository carry
+# CC-BY-4.0, which is recorded in LICENSE-DATASETS.md and written into every
+# manifest. The format has one license field, so this is the one it holds.
+
+cff-version: 1.2.0
+message: If you use this work, please cite it as below.
+title: 'Mintmark human resources: synthetic Turkish workforce and payroll records'
+abstract: 'Declaration-and-data pack producing synthetic Turkish employment records: employees,
+  position history, leave, payroll, and free-text performance, recruiting, and request documents.
+  Holds two boundaries: health stays at category granularity, and the criminal record surface
+  stays procedural, recording that a document was requested rather than what it contained.
+  Requires the Mintmark engine.'
+type: dataset
+version: 0.1.1
+authors:
+- family-names: Guner
+  given-names: Fatih
+  alias: fatihguner
+repository-code: https://github.com/lokomotifai/mintmark-hr
+license: Apache-2.0
+keywords:
+- synthetic data
+- Turkish
+- human resources
+- payroll
+- KVKK
+- named entity recognition
+- special category data
