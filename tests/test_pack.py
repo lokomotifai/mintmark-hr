@@ -9,6 +9,7 @@ boundaries this pack owns are held by a control rather than by review.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -598,12 +599,36 @@ def test_each_readme_declares_both_boundaries(path: Path) -> None:
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
-def test_neither_readme_claims_a_published_release(path: Path) -> None:
-    text = path.read_text(encoding="utf-8").lower()
-    assert "/releases/download" not in text
-    assert "no release has been published" in text or "yayımlanmış bir sürüm yok" in text, (
-        f"{path.name} does not state that nothing is published"
+def test_each_readme_names_the_release_that_actually_exists(path: Path) -> None:
+    """A README may claim a release, and the claim has to be the right one.
+
+    This replaced a test that asserted nothing was published, which was correct
+    until something was. The failure it now guards is subtler and likelier: a
+    version bump that leaves the README pointing at a tag nobody cut, or at an
+    older one whose datasets no longer reproduce from these declarations.
+    """
+    text = path.read_text(encoding="utf-8")
+    tag = f"v{PACK.version}"
+    assert f"/releases/tag/{tag}" in text, (
+        f"{path.name} does not point at {tag}, the version this pack declares"
     )
+    stale = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
+    assert set(stale) == {PACK.version}, (
+        f"{path.name} names releases {sorted(set(stale))} while the pack is {PACK.version}"
+    )
+
+
+@pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
+def test_neither_readme_claims_the_engine_is_on_a_package_index(path: Path) -> None:
+    """It is not, and the name there is unclaimed.
+
+    Telling a reader to install by package name would install whatever somebody
+    else eventually puts under that name.
+    """
+    text = path.read_text(encoding="utf-8").lower()
+    assert "pypi.org/project" not in text
+    assert "uv tool install mintmark\n" not in text
+    assert "pip install mintmark" not in text
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])

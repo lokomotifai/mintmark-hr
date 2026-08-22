@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Motor kodu yok" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i karşılandı" src="https://img.shields.io/badge/kapsam%20hedefleri-18%2F18-3C873A?style=flat-square">
-  <img alt="Yayımlanmış sürüm yok" src="https://img.shields.io/badge/sürüm-yayımlanmadı-3B3F46?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Sürüm v0.1.1" src="https://img.shields.io/badge/sürüm-v0.1.1-3C873A?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -49,8 +49,9 @@ ortamına taşınamaz. Bordro banka bilgisi taşır. İzin kayıtları hastalık
 taşır. İşe alım adli sicil kontrolü taşır. Bu paket o veriyi bildirir, motor da
 üretir: belirlenimci, aralık etiketli ve bir künye ile mühürlü.
 
-**Sürüm 0.1, ön yayın. Yayımlanmış bir sürüm yok ve indirilebilecek bir referans
-veri kümesi henüz mevcut değil.** Bugün doğru olanlar: `packcheck` sabitlenmiş
+**Sürüm 0.1.1. İki referans veri kümesi
+[v0.1.1 sürümüne](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) ekli olarak
+yayımlandı; her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olanlar: `packcheck` sabitlenmiş
 çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz
 kapsam hedefinin hepsini karşılıyor.
 
@@ -139,7 +140,8 @@ ve veri alındıktan sonra keşfedilmek yerine burada belirtilmiştir.
 ## Kendiniz üretin
 
 ```bash
-uv tool install mintmark
+# Motor henüz PyPI'de değil; depodan kurun.
+uv tool install git+https://github.com/lokomotifai/mintmark
 git clone https://github.com/lokomotifai/mintmark-hr
 cd mintmark-hr
 
@@ -262,9 +264,11 @@ Hepsi paketlenmiş çekirdek wheel'e karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.1, ön yayın. Yayımlanmış sürüm yok, yayımlanmış veri kümesi yok. Referans
-veri kümeleri [docs/reference-datasets.json](docs/reference-datasets.json)
-dosyasında, kararlaştırılmış tohumlarıyla bildirilmiştir.
+Sürüm 0.1.1, yayımlandı. İki referans veri kümesi
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümüne ekli;
+[docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
+tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor henüz PyPI'de
+değil, bu yüzden deposundan kurun.
 
 Bu paket diğerlerinde olmayan bir yönetişim kontrol noktası taşıyor: temel özel
 oran ve özel nitelikli şablon alt kümesinin tamamı, herhangi bir kamuya açık

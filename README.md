@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <img alt="No release published" src="https://img.shields.io/badge/release-not%20published-3B3F46?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Release v0.1.1" src="https://img.shields.io/badge/release-v0.1.1-3C873A?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -50,8 +50,9 @@ test environment. Payroll carries bank details. Leave records carry sick days.
 Recruiting carries criminal record checks. This pack declares that data, and the
 engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.1, pre-release. No release has been published and no reference
-dataset exists yet to download.** What is true today: `packcheck` passes against
+**Version 0.1.1. Two reference datasets are published as assets on
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), each
+carrying its own manifest and checksums.** What is true today: `packcheck` passes against
 the pinned core, the test suite passes, and the evaluation recipe meets every one
 of its eighteen coverage targets.
 
@@ -141,7 +142,8 @@ rather than discovered after ingest.
 ## Mint it yourself
 
 ```bash
-uv tool install mintmark
+# The engine is not on PyPI yet; install it from the repository.
+uv tool install git+https://github.com/lokomotifai/mintmark
 git clone https://github.com/lokomotifai/mintmark-hr
 cd mintmark-hr
 
@@ -259,9 +261,11 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.1, pre-release. No release, no published dataset. The reference datasets
-are declared in [docs/reference-datasets.json](docs/reference-datasets.json) with
-their settled seeds.
+Version 0.1.1, released. Two reference datasets are attached to
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), minted with the
+safe identifier policy at the seeds declared in
+[docs/reference-datasets.json](docs/reference-datasets.json). The engine is not on
+PyPI yet, so install it from its repository.
 
 This pack carries one governance checkpoint the other packs do not: the baseline
 special rate and the full special-category template subset need a recorded

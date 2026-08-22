@@ -14,7 +14,7 @@ The pack version is part of the pack digest and the digest seeds the streams, so
 raising the version is itself such a change. Version and content correspond
 exactly, which is the point.
 
-## Unreleased
+## 0.1.1 - 2026-08-22
 
 ### Added
 
@@ -50,3 +50,9 @@ the others do not: the baseline special rate and the full special-category
 template subset need a recorded governance sign-off before any public launch
 surface exists.
 
+### About this version number
+
+This is the first published release and it is not 0.1.0. The pack version is part
+of the pack digest and the digest seeds the streams, so the declaration change
+that added the dataset license moved the version with it. Version 0.1.0 existed in
+this repository and was never published; nothing reproduces from it.
