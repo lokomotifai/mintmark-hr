@@ -1,15 +1,17 @@
 # Owner-only planning material. Never enters git history.
-# Repository standard section 7.1: owner-only planning documents are
-# gitignored by name.
+# Repository standard section 7.1: owner-only planning documents are gitignored
+# by name.
 PLAN.md
 briefs/
 research/
 corpus/
 
-# Build and run output
+# Reference datasets are release artifacts, never committed (FD-05). Only the
+# bounded samples/ directory is.
 dist/
-build/
-*.egg-info/
+*.jsonl
+!samples/*.jsonl
+!tests/**/*.jsonl
 
 # Environments and caches
 .venv/
@@ -21,9 +23,3 @@ __pycache__/
 
 # OS
 .DS_Store
-
-# Reference datasets are release artifacts, never committed (FD-05)
-# Only samples/ is committed, bounded per the pack contract.
-*.jsonl
-!samples/*.jsonl
-!tests/**/*.jsonl

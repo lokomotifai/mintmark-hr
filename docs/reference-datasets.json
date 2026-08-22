@@ -1,0 +1,15 @@
+{
+  "_note": "The reference datasets this pack publishes as release artifacts. The seeds are settled by the brief so that published manifests are reproducible by anyone holding the same pack and core versions. A changed seed silently invalidates a published manifest and is never the fix for a coverage miss; change the templates or the mix instead.",
+  "workforce-baseline": {
+    "seed": "20261101",
+    "identifier_policy": "safe",
+    "format": "jsonl",
+    "description": "The workforce-shaped dataset: employees, position history, leave, payroll, and the free-text surfaces where personal data actually hides."
+  },
+  "pii-eval": {
+    "seed": "20261102",
+    "identifier_policy": "safe",
+    "format": "jsonl",
+    "description": "The document-heavy evaluation set the Hushmark cross-link points at. Declares a coverage target for every one of the eighteen labels."
+  }
+}

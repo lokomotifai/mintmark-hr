@@ -1,0 +1,25 @@
+schema_version: 1
+type_name: leave_record
+id_prefix: LVE
+order: 3
+fields:
+  - {name: leave_id, type: str, generator: seq_id, pii_label: none}
+  - name: employee_id
+    type: ref
+    generator: seq_id
+    ref: {parent: employee, counts: [2, 4, 6, 8], weights: ["0.20", "0.35", "0.30", "0.15"]}
+    pii_label: none
+  # Design note, settled by the brief: a structured leave-type code carries no
+  # label. The per-field label of the pack contract is static, and a code value is
+  # operational data. The health signal this pack exists to exercise lives in the
+  # document types, where spans are labeled. Labeling a code here would corrupt
+  # every evaluation the dataset is used for.
+  - name: type
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [yillik, istirahat, mazeret, ucretsiz, dogum, evlilik]
+      weights: ["0.60", "0.18", "0.10", "0.05", "0.04", "0.03"]
+    pii_label: none
+  - {name: days, type: int, generator: int_uniform, params: {low: 1, high: 14}, pii_label: none}
+  - {name: start_date, type: date, generator: datetime_window, pii_label: none}

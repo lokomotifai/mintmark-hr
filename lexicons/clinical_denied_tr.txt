@@ -1,0 +1,48 @@
+# Clinical vocabulary this pack refuses.
+#
+# The health branch is the sensitive surface here, and the boundary is category
+# granularity: a health mention names a class of condition and stops. No
+# diagnosis, no treatment, no medication, no prognosis.
+#
+# The core's HEALTH descriptors are already written that way, so this list is the
+# second control rather than the first. It exists because review gets tired and a
+# list does not, and because the failure mode is silent: a template that drifts
+# into clinical detail still renders, still labels, and still passes every other
+# check.
+#
+# Matching is folded, contiguous-phrase, and word-boundary aware, the same as the
+# institution denylist.
+#
+# Diagnosis and finding
+teshis
+tani konuldu
+tani kondu
+biyopsi sonucu
+tahlil sonucu
+rontgen bulgusu
+tomografi bulgusu
+mr sonucu
+patoloji raporu
+#
+# Treatment
+tedavi protokolu
+kemoterapi
+radyoterapi
+diyaliz
+ameliyat karari
+cerrahi mudahale
+enjeksiyon uygulandi
+serum takildi
+#
+# Medication
+recete edildi
+ilac dozu
+antibiyotik verildi
+agri kesici verildi
+insulin dozu
+#
+# Prognosis
+prognoz
+yasam beklentisi
+nuks riski
+iyilesme orani

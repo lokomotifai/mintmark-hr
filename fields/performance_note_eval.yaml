@@ -1,0 +1,20 @@
+schema_version: 1
+type_name: performance_note_eval
+id_prefix: PRFE
+order: 8
+fields:
+  - {name: performance_note_eval_id, type: str, generator: seq_id, pii_label: none}
+  - name: employee_id
+    type: ref
+    generator: seq_id
+    ref: {parent: employee, counts: [1], weights: ["1"]}
+    pii_label: none
+  - name: author_role
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [yonetici, ik_is_ortagi]
+      weights: ["0.7", "0.3"]
+    pii_label: none
+  - {name: created_ts, type: datetime, generator: datetime_window, pii_label: none}
+  - {name: body, type: doc, generator: "grammar:performance_notes_eval", pii_label: none}

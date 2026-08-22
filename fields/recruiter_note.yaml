@@ -1,0 +1,19 @@
+schema_version: 1
+type_name: recruiter_note
+id_prefix: REC
+order: 6
+# Deliberately parentless. A recruiter note is written about a candidate, and a
+# candidate is by definition not yet an employee, so there is no employee record
+# to point at. Giving this type a parent reference would encode the opposite
+# claim into every dataset the pack produces.
+fields:
+  - {name: recruiter_note_id, type: str, generator: seq_id, pii_label: none}
+  - name: stage
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [on_gorusme, teknik_degerlendirme, referans_kontrolu, teklif]
+      weights: ["0.4", "0.3", "0.2", "0.1"]
+    pii_label: none
+  - {name: created_ts, type: datetime, generator: datetime_window, pii_label: none}
+  - {name: body, type: doc, generator: "grammar:recruiter_notes", pii_label: none}

@@ -1,0 +1,49 @@
+# Required checks. Every job here runs offline after dependency bootstrap,
+# against the core wheel vendored under vendor/. Any job needing network at run
+# time belongs in core-pin.yml, labeled as such.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  conformance:
+    name: packcheck, tests, prose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Verify the vendored core before trusting it
+        run: |
+          cd vendor && shasum -a 256 -c CHECKSUMS
+      - run: uv sync --locked
+      - name: Conformance run against the pinned core
+        run: uv run mintmark packcheck .
+      - run: uv run pytest -ra
+      - run: uv run python tools/mdlint.py .
+
+  canary:
+    name: private-corpus canary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      # The canary is never committed. A missing secret fails this job by design:
+      # a canary check that silently skips is worse than no check at all.
+      - env:
+          MINTMARK_CANARY: ${{ secrets.MINTMARK_CANARY }}
+        run: uv run python tools/canary.py .

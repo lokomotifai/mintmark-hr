@@ -1,0 +1,18 @@
+entries:
+- id: rec_screen
+  weight: '0.5'
+  text: 'Aday degerlendirme notu. Aday {entity:PERSON}, basvurdugu pozisyon icin {field:recruiter_note.stage}
+    asamasinda degerlendirildi. Iletisim {id:PHONE}, eposta {id:EMAIL}. Onceki isvereni {entity:ORG}.
+    Teknik yetkinlik (beklentiyi karsiliyor|kismen karsiliyor|beklentinin uzerinde) olarak notlandi. [?0.35:
+    Adayin ikamet ettigi il {entity:ADDRESS} olarak beyan edildi.] Surec (devam ediyor|sonraki asamaya
+    gecti|olumsuz sonuclandi).'
+- id: rec_reference
+  weight: '0.5'
+  # The reference-check wording records that a check was requested and what the
+  # process returned. It never asserts that a person has a record. See the pack
+  # engineering notes for why that distinction is load-bearing here.
+  text: 'Aday degerlendirme notu. Aday {entity:PERSON}, {field:recruiter_note.stage} asamasinda.
+    Referans olarak verdigi kisi {entity:PERSON}, {entity:ORG} bunyesinde calisiyor; iletisim {id:PHONE}.
+    Referans gorusmesinde (birlikte calisma suresi|gorev tanimi|ayrilis nedeni) teyit edildi. [?0.3: Adayin
+    dogum tarihi {entity:DOB} olarak kayitlara gecti.] [?special: Ise alim politikasi geregi talep edilen
+    {entity:CRIMINAL} belgesi adaydan istendi; belge (teslim edildi|beklenmektedir).] Not kapatildi.'

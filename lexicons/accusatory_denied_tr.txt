@@ -1,0 +1,66 @@
+# Accusatory vocabulary this pack refuses.
+#
+# The criminal-record branch is this pack's sharpest edge. A reference check is a
+# process: an employer requests a document and records what came back. Text that
+# states a person committed an offence, was convicted, or is under investigation
+# is an accusation about a person, and a synthetic person is still a person-shaped
+# claim that a model can learn to produce about a real one.
+#
+# So the boundary is procedural: the document may say a record was requested,
+# received, or is pending. It may never say what the record contains.
+#
+# This is the second control, not the first. The core's CRIMINAL descriptors are
+# already written as document names rather than allegations. The list exists
+# because review gets tired and a list does not.
+#
+# Matching is folded, contiguous-phrase, and word-boundary aware, the same as the
+# institution denylist.
+#
+# Conviction and sentencing
+hukum giydi
+mahkum oldu
+mahkum edildi
+sabikali
+sabikasi var
+ceza aldi
+hapis cezasi
+adli para cezasi
+hukmun aciklanmasi
+denetimli serbestlik
+tecil edildi
+# Allegation and process
+suc isledi
+suclu bulundu
+sanik olarak
+sanik sifatiyla
+supheli olarak
+supheli sifatiyla
+hakkinda dava
+dava acildi
+sorusturma baslatildi
+sorusturma yurutuluyor
+kovusturma
+gozaltina alindi
+tutuklandi
+ifadesi alindi
+# Named offence classes
+dolandiricilik
+zimmet
+rusvet
+hirsizlik
+guveni kotuye kullanma
+sahtecilik
+kacakcilik
+uyusturucu
+kasten yaralama
+tehdit sucu
+# Workplace conduct framed as an accusation
+disiplin sucu
+istismar etti
+tacizde bulundu
+mobbing uyguladi
+gorevi kotuye kullandi
+# Inference from a document
+kaydi temiz degil
+olumsuz sabika
+kaydi cikti

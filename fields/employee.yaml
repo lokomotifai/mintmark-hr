@@ -1,0 +1,58 @@
+schema_version: 1
+type_name: employee
+id_prefix: EMP
+order: 1
+fields:
+  - {name: employee_id, type: str, generator: seq_id, pii_label: none}
+  - {name: first_name, type: str, generator: "lexicon:given_names_tr", pii_label: PERSON}
+  - {name: last_name, type: str, generator: "lexicon:surnames_tr", pii_label: PERSON}
+  - {name: national_id, type: str, generator: "identifier:TCKN", pii_label: TCKN}
+  # Drawn from the span that gives a person this age at the start of the
+  # recipe window. Employment gives this window a floor and a ceiling that the other packs do not have.
+  - {name: birth_date, type: date, generator: datetime_window,
+     params: {age_years: [18, 65]}, pii_label: DOB}
+  # The employer subdomain keeps the address inside the reserved .example space
+  # while making the employer visible, which is what makes an HR address realistic.
+  - {name: email, type: str, generator: "derived:email_from_name", params: {subdomain: ankaholding}, pii_label: EMAIL}
+  - {name: phone, type: str, generator: "identifier:PHONE", pii_label: PHONE}
+  - {name: il, type: str, generator: "lexicon:provinces_tr", pii_label: ADDRESS}
+  - {name: mahalle, type: str, generator: "lexicon:mahalleler_tr", pii_label: ADDRESS}
+  - {name: street, type: str, generator: "lexicon:sokaklar_tr", pii_label: ADDRESS}
+  - {name: building_no, type: int, generator: int_uniform, params: {low: 1, high: 180}, pii_label: ADDRESS}
+  - name: department
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [operasyon, satis, teknoloji, finans, pazarlama, ik, hukuk, idari]
+      weights: ["0.24", "0.20", "0.18", "0.12", "0.10", "0.08", "0.04", "0.04"]
+    pii_label: none
+  - {name: title, type: str, generator: "lexicon:titles_tr", pii_label: none}
+  - name: grade
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [uzman_yardimcisi, uzman, kidemli_uzman, yonetici, direktor]
+      weights: ["0.25", "0.35", "0.20", "0.15", "0.05"]
+    pii_label: none
+  - name: employment_type
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [belirsiz_sureli, belirli_sureli, kismi_zamanli]
+      weights: ["0.82", "0.10", "0.08"]
+    pii_label: none
+  - {name: start_date, type: date, generator: datetime_window, pii_label: none}
+  - {name: end_date, type: date, generator: "derived:date_offset", params: {source: start_date, days: 200}, nullable: true, null_rate: "0.85", pii_label: none}
+  - {name: salary_kurus, type: int, generator: "int_lognormal_table:balances", pii_label: none}
+  - {name: salary_iban, type: str, generator: "identifier:IBAN", pii_label: IBAN}
+  # Drawn, not a ref: self-references within one record type are out of contract,
+  # so the manager named here corresponds to no employee record. Stated in both
+  # READMEs rather than left for a consumer to discover after ingest.
+  - {name: manager_name, type: str, generator: "lexicon:surnames_tr", pii_label: PERSON}
+  - name: education_level
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [lise, on_lisans, lisans, yuksek_lisans, doktora]
+      weights: ["0.15", "0.15", "0.55", "0.13", "0.02"]
+    pii_label: none

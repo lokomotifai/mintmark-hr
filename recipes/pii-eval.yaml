@@ -1,0 +1,41 @@
+schema_version: 1
+name: pii-eval
+records:
+  employee: 900
+  position_history: 900
+  leave_record: 900
+  payroll_entry: 900
+  performance_note: 0
+  recruiter_note: 0
+  hr_request: 0
+  performance_note_eval: 1200
+  recruiter_note_eval: 800
+  hr_request_eval: 1000
+date_window:
+  start: "2026-01-01T00:00:00+00:00"
+  end: "2026-12-31T23:59:59+00:00"
+doc_mix:
+  performance_notes_eval: "0.4"
+  recruiter_notes_eval: "0.27"
+  hr_requests_eval: "0.33"
+special_rate: "1"
+coverage_targets:
+  PERSON: 300
+  ADDRESS: 300
+  ORG: 300
+  DOB: 300
+  HEALTH: 300
+  RELIGION: 300
+  ETHNICITY: 300
+  POLITICAL: 300
+  SEXUAL_LIFE: 300
+  CRIMINAL: 300
+  BIOMETRIC_REF: 300
+  UNION: 300
+  TCKN: 500
+  VKN: 500
+  IBAN: 500
+  PAN: 500
+  PHONE: 500
+  EMAIL: 500
+identifier_policy: safe

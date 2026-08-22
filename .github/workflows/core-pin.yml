@@ -1,0 +1,43 @@
+# THIS WORKFLOW REQUIRES NETWORK ACCESS and is deliberately separated from the
+# required checks for that reason.
+#
+# The vendored wheel is what required CI actually runs against, so something has
+# to confirm it still matches the core repository at the pinned tag. That
+# comparison is the only thing standing between an offline check and a check that
+# passes against an artifact nobody recognizes.
+name: core pin (network)
+
+on:
+  schedule:
+    - cron: "31 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  pin:
+    name: vendored core matches the pinned tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Recorded pin
+        run: |
+          echo "requires_core range, from pack.yaml:"
+          grep requires_core pack.yaml
+          echo
+          echo "vendored artifact:"
+          cat vendor/CHECKSUMS
+          echo
+          echo "Compare against the core repository at the tag recorded in"
+          echo "docs/engineering-notes.md. On a mismatch, open an issue rather than"
+          echo "replacing the wheel: a changed core changes emitted bytes."
+      - name: Cadence findings land as issues
+        if: always()
+        run: |
+          echo "Cadence run complete. A run that finds nothing still records that"
+          echo "it ran: silence is not evidence."

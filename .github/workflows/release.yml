@@ -1,0 +1,31 @@
+# DISABLED. This workflow does not run.
+#
+# A release from this repository carries reference datasets, which are the thing
+# consumers actually take. Publishing them is an external authorization
+# checkpoint, and so is confirming the dataset license.
+#
+# This file exists so that the release mechanics are reviewable before they are
+# ever executed, and so that enabling them is a visible single change rather than
+# new machinery written under time pressure.
+name: release (disabled)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "This workflow is disabled pending authorization. Do not run."
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  blocked:
+    name: refuse to run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse
+        run: |
+          echo "The release workflow is disabled pending the publication checkpoint."
+          echo "See the comment block at the top of this file."
+          exit 1

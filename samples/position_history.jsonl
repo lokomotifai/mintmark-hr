@@ -1,0 +1,50 @@
+{"record_id":"POS-00000000","employee_id":"EMP-00000000","title":"Musteri Iliskileri Uzmani","department":"teknoloji","start_date":"2026-03-09","end_date":"2026-09-05","change_reason":"terfi"}
+{"record_id":"POS-00000001","employee_id":"EMP-00000000","title":"Grafik Tasarimci","department":"finans","start_date":"2026-01-04","end_date":"2026-07-03","change_reason":"terfi"}
+{"record_id":"POS-00000002","employee_id":"EMP-00000000","title":"Satis Temsilcisi","department":"operasyon","start_date":"2026-10-13","end_date":"2027-04-11","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000003","employee_id":"EMP-00000001","title":"Egitim Uzmani","department":"teknoloji","start_date":"2026-05-15","end_date":"2026-11-11","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000004","employee_id":"EMP-00000001","title":"Sistem Uzmani","department":"finans","start_date":"2026-08-13","end_date":"2027-02-09","change_reason":"transfer"}
+{"record_id":"POS-00000005","employee_id":"EMP-00000002","title":"Idari Isler Uzmani","department":"operasyon","start_date":"2026-11-08","end_date":"2027-05-07","change_reason":"transfer"}
+{"record_id":"POS-00000006","employee_id":"EMP-00000003","title":"Musteri Iliskileri Uzmani","department":"finans","start_date":"2026-10-10","end_date":"2027-04-08","change_reason":"terfi"}
+{"record_id":"POS-00000007","employee_id":"EMP-00000004","title":"Veri Analisti","department":"teknoloji","start_date":"2026-08-19","end_date":"2027-02-15","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000008","employee_id":"EMP-00000004","title":"Ofis Yoneticisi","department":"idari","start_date":"2026-02-10","end_date":"2026-08-09","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000009","employee_id":"EMP-00000005","title":"Urun Yoneticisi","department":"finans","start_date":"2026-08-08","end_date":"2027-02-04","change_reason":"terfi"}
+{"record_id":"POS-00000010","employee_id":"EMP-00000006","title":"Veri Analisti","department":"satis","start_date":"2026-05-26","end_date":"2026-11-22","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000011","employee_id":"EMP-00000006","title":"Operasyon Uzmani","department":"teknoloji","start_date":"2026-03-22","end_date":"2026-09-18","change_reason":"terfi"}
+{"record_id":"POS-00000012","employee_id":"EMP-00000006","title":"Musteri Iliskileri Uzmani","department":"ik","start_date":"2026-05-27","end_date":"2026-11-23","change_reason":"transfer"}
+{"record_id":"POS-00000013","employee_id":"EMP-00000007","title":"Ofis Yoneticisi","department":"pazarlama","start_date":"2026-11-19","end_date":"2027-05-18","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000014","employee_id":"EMP-00000008","title":"Insan Kaynaklari Uzmani","department":"pazarlama","start_date":"2026-08-02","end_date":"2027-01-29","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000015","employee_id":"EMP-00000009","title":"Icerik Editoru","department":"teknoloji","start_date":"2026-04-28","end_date":"2026-10-25","change_reason":"transfer"}
+{"record_id":"POS-00000016","employee_id":"EMP-00000010","title":"Sistem Uzmani","department":"idari","start_date":"2026-01-17","end_date":"2026-07-16","change_reason":"transfer"}
+{"record_id":"POS-00000017","employee_id":"EMP-00000011","title":"Is Guvenligi Uzmani","department":"teknoloji","start_date":"2026-08-03","end_date":"2027-01-30","change_reason":"transfer"}
+{"record_id":"POS-00000018","employee_id":"EMP-00000012","title":"Urun Yoneticisi","department":"finans","start_date":"2026-12-20","end_date":"2027-06-18","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000019","employee_id":"EMP-00000013","title":"Pazarlama Uzmani","department":"ik","start_date":"2026-01-12","end_date":"2026-07-11","change_reason":"terfi"}
+{"record_id":"POS-00000020","employee_id":"EMP-00000014","title":"Yazilim Gelistirici","department":"satis","start_date":"2026-04-07","end_date":"2026-10-04","change_reason":"terfi"}
+{"record_id":"POS-00000021","employee_id":"EMP-00000015","title":"Hukuk Musaviri","department":"teknoloji","start_date":"2026-08-25","end_date":"2027-02-21","change_reason":"terfi"}
+{"record_id":"POS-00000022","employee_id":"EMP-00000015","title":"Sistem Uzmani","department":"idari","start_date":"2026-07-31","end_date":"2027-01-27","change_reason":"terfi"}
+{"record_id":"POS-00000023","employee_id":"EMP-00000016","title":"Pazarlama Uzmani","department":"teknoloji","start_date":"2026-11-18","end_date":"2027-05-17","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000024","employee_id":"EMP-00000016","title":"Icerik Editoru","department":"operasyon","start_date":"2026-12-19","end_date":"2027-06-17","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000025","employee_id":"EMP-00000017","title":"Hukuk Musaviri","department":"teknoloji","start_date":"2026-02-15","end_date":"2026-08-14","change_reason":"transfer"}
+{"record_id":"POS-00000026","employee_id":"EMP-00000018","title":"Insan Kaynaklari Uzmani","department":"hukuk","start_date":"2026-05-19","end_date":"2026-11-15","change_reason":"terfi"}
+{"record_id":"POS-00000027","employee_id":"EMP-00000019","title":"Lojistik Uzmani","department":"finans","start_date":"2026-02-16","end_date":"2026-08-15","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000028","employee_id":"EMP-00000020","title":"Veri Analisti","department":"teknoloji","start_date":"2026-01-06","end_date":"2026-07-05","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000029","employee_id":"EMP-00000021","title":"Kalite Kontrol Uzmani","department":"teknoloji","start_date":"2026-05-10","end_date":"2026-11-06","change_reason":"transfer"}
+{"record_id":"POS-00000030","employee_id":"EMP-00000022","title":"Hukuk Musaviri","department":"operasyon","start_date":"2026-02-21","end_date":"2026-08-20","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000031","employee_id":"EMP-00000023","title":"Hukuk Musaviri","department":"operasyon","start_date":"2026-10-22","end_date":"2027-04-20","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000032","employee_id":"EMP-00000024","title":"Is Guvenligi Uzmani","department":"teknoloji","start_date":"2026-09-11","end_date":"2027-03-10","change_reason":"transfer"}
+{"record_id":"POS-00000033","employee_id":"EMP-00000024","title":"Depo Sorumlusu","department":"satis","start_date":"2026-11-27","end_date":"2027-05-26","change_reason":"terfi"}
+{"record_id":"POS-00000034","employee_id":"EMP-00000024","title":"Idari Isler Uzmani","department":"ik","start_date":"2026-02-18","end_date":"2026-08-17","change_reason":"transfer"}
+{"record_id":"POS-00000035","employee_id":"EMP-00000025","title":"Idari Isler Uzmani","department":"finans","start_date":"2026-07-18","end_date":"2027-01-14","change_reason":"terfi"}
+{"record_id":"POS-00000036","employee_id":"EMP-00000026","title":"Muhasebe Uzmani","department":"operasyon","start_date":"2026-02-10","end_date":"2026-08-09","change_reason":"terfi"}
+{"record_id":"POS-00000037","employee_id":"EMP-00000026","title":"Is Guvenligi Uzmani","department":"ik","start_date":"2026-12-27","end_date":"2027-06-25","change_reason":"terfi"}
+{"record_id":"POS-00000038","employee_id":"EMP-00000026","title":"Satis Temsilcisi","department":"operasyon","start_date":"2026-12-01","end_date":"2027-05-30","change_reason":"unvan_degisikligi"}
+{"record_id":"POS-00000039","employee_id":"EMP-00000027","title":"Idari Isler Uzmani","department":"idari","start_date":"2026-10-14","end_date":"2027-04-12","change_reason":"transfer"}
+{"record_id":"POS-00000040","employee_id":"EMP-00000027","title":"Veri Analisti","department":"pazarlama","start_date":"2026-04-29","end_date":"2026-10-26","change_reason":"terfi"}
+{"record_id":"POS-00000041","employee_id":"EMP-00000028","title":"Kalite Kontrol Uzmani","department":"ik","start_date":"2026-05-22","end_date":"2026-11-18","change_reason":"terfi"}
+{"record_id":"POS-00000042","employee_id":"EMP-00000029","title":"Satis Temsilcisi","department":"ik","start_date":"2026-03-21","end_date":"2026-09-17","change_reason":"yeniden_yapilanma"}
+{"record_id":"POS-00000043","employee_id":"EMP-00000029","title":"Finans Analisti","department":"ik","start_date":"2026-04-11","end_date":"2026-10-08","change_reason":"transfer"}
+{"record_id":"POS-00000044","employee_id":"EMP-00000030","title":"Veri Analisti","department":"teknoloji","start_date":"2026-11-07","end_date":"2027-05-06","change_reason":"terfi"}
+{"record_id":"POS-00000045","employee_id":"EMP-00000031","title":"Musteri Iliskileri Uzmani","department":"operasyon","start_date":"2026-11-09","end_date":"2027-05-08","change_reason":"transfer"}
+{"record_id":"POS-00000046","employee_id":"EMP-00000031","title":"Urun Yoneticisi","department":"teknoloji","start_date":"2026-03-19","end_date":"2026-09-15","change_reason":"terfi"}
+{"record_id":"POS-00000047","employee_id":"EMP-00000031","title":"Is Guvenligi Uzmani","department":"satis","start_date":"2026-10-06","end_date":"2027-04-04","change_reason":"transfer"}
+{"record_id":"POS-00000048","employee_id":"EMP-00000032","title":"Muhasebe Uzmani","department":"teknoloji","start_date":"2026-02-04","end_date":"2026-08-03","change_reason":"terfi"}
+{"record_id":"POS-00000049","employee_id":"EMP-00000032","title":"Sistem Uzmani","department":"teknoloji","start_date":"2026-05-14","end_date":"2026-11-10","change_reason":"unvan_degisikligi"}

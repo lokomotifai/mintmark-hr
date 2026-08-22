@@ -1,0 +1,28 @@
+schema_version: 1
+type_name: position_history
+id_prefix: POS
+order: 2
+fields:
+  - {name: record_id, type: str, generator: seq_id, pii_label: none}
+  - name: employee_id
+    type: ref
+    generator: seq_id
+    ref: {parent: employee, counts: [1, 2, 3], weights: ["0.55", "0.30", "0.15"]}
+    pii_label: none
+  - {name: title, type: str, generator: "lexicon:titles_tr", pii_label: none}
+  - name: department
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [operasyon, satis, teknoloji, finans, pazarlama, ik, hukuk, idari]
+      weights: ["0.24", "0.20", "0.18", "0.12", "0.10", "0.08", "0.04", "0.04"]
+    pii_label: none
+  - {name: start_date, type: date, generator: datetime_window, pii_label: none}
+  - {name: end_date, type: date, generator: "derived:date_offset", params: {source: start_date, days: 180}, pii_label: none}
+  - name: change_reason
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [terfi, transfer, unvan_degisikligi, yeniden_yapilanma]
+      weights: ["0.40", "0.25", "0.20", "0.15"]
+    pii_label: none

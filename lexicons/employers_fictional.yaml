@@ -1,0 +1,31 @@
+name: employers_fictional
+source_note: Invented employer names on the place-and-nature pattern. No source register. Every
+  entry is scanned against the real-institution denylist in required CI, and every one yields
+  a valid .example subdomain for the employee email derivation.
+values:
+- Anka Holding
+- Meridyen Teknoloji
+- Toros Lojistik
+- Ilgaz Makine
+- Pusula Danismanlik
+- Safak Enerji
+- Harman Gida
+- Kuzey Yildizi Yazilim
+- Marmara Tekstil
+- Ege Kiyi Turizm
+- Cinar Saglik Hizmetleri
+- Deniz Kum Insaat
+- Yelken Denizcilik
+- Zirve Otomotiv
+- Ufuk Egitim
+- Kervan Nakliyat
+- Gokce Ambalaj
+- Karadeniz Kiyi Balikcilik
+- Efe Mobilya
+- Tuna Elektronik
+- Selale Icecek
+- Ada Perakende
+- Nilufer Kimya
+- Serhat Metal
+- Firtina Reklam
+- Yamac Muhendislik

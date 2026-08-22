@@ -1,0 +1,49 @@
+entries:
+- id: eval_health_religion
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:HEALTH} beyani islendi.] [?special:
+    Ayrica {entity:RELIGION} notu eklendi.] Kayit tamamlandi.'
+- id: eval_union_ethnicity
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:UNION} beyani islendi.] [?special: Ayrica
+    {entity:ETHNICITY} notu eklendi.] Kayit tamamlandi.'
+- id: eval_political_criminal
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:POLITICAL} beyani islendi.] [?special:
+    Ayrica {entity:CRIMINAL} notu eklendi.] Kayit tamamlandi.'
+- id: eval_religion_biometric_ref
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:RELIGION} beyani islendi.] [?special:
+    Ayrica {entity:BIOMETRIC_REF} notu eklendi.] Kayit tamamlandi.'
+- id: eval_ethnicity_sexual_life
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:ETHNICITY} beyani islendi.] [?special:
+    Ayrica {entity:SEXUAL_LIFE} notu eklendi.] Kayit tamamlandi.'
+- id: eval_criminal_health
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:CRIMINAL} beyani islendi.] [?special:
+    Ayrica {entity:HEALTH} notu eklendi.] Kayit tamamlandi.'
+- id: eval_biometric_ref_union
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:BIOMETRIC_REF} beyani islendi.] [?special:
+    Ayrica {entity:UNION} notu eklendi.] Kayit tamamlandi.'
+- id: eval_sexual_life_political
+  weight: '1'
+  text: 'Aday dosyasi kaydi. Aday {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres {entity:ADDRESS},
+    telefon {id:PHONE}, eposta {id:EMAIL}. Harcama iadesi {id:IBAN} hesabina, kart {id:PAN}. Onceki isvereni
+    {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:SEXUAL_LIFE} beyani islendi.] [?special:
+    Ayrica {entity:POLITICAL} notu eklendi.] Kayit tamamlandi.'

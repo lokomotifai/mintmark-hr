@@ -1,0 +1,23 @@
+schema_version: 1
+type_name: payroll_entry
+id_prefix: PRL
+order: 4
+fields:
+  - {name: entry_id, type: str, generator: seq_id, pii_label: none}
+  - name: employee_id
+    type: ref
+    generator: seq_id
+    ref: {parent: employee, counts: [12], weights: ["1"]}
+    pii_label: none
+  - {name: payment_date, type: date, generator: datetime_window, pii_label: none}
+  - {name: gross_kurus, type: int, generator: "int_lognormal_table:balances", pii_label: none}
+  - {name: net_kurus, type: int, generator: "derived:ratio_of", params: {source: gross_kurus, numerator: 72, denominator: 100}, pii_label: none}
+  - {name: payment_iban, type: str, generator: "identifier:IBAN", pii_label: IBAN}
+  - name: anomaly_kind
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [none, mukerrer_odeme, ayrilmis_personel_odemesi, tutar_sapmasi, iban_degisikligi_sonrasi_odeme]
+      weights: ["0.93", "0.025", "0.02", "0.015", "0.01"]
+    pii_label: none
+  - {name: is_anomaly, type: str, generator: "derived:flag_unless", params: {source: anomaly_kind, value: none}, pii_label: none}
