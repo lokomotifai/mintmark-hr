@@ -20,8 +20,8 @@ jobs:
     name: packcheck, tests, prose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
       - name: Verify the vendored core before trusting it
@@ -49,8 +49,8 @@ jobs:
     # check at all.
     if: github.actor != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
       - run: uv sync --locked
