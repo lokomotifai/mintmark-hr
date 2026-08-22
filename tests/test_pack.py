@@ -707,3 +707,19 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
         "longer part of the digest and two datasets can now share a version while "
         "differing in content"
     )
+
+
+@pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
+def test_no_readme_claims_a_test_count(path: Path) -> None:
+    """A number in a badge goes stale the next time somebody adds a test.
+
+    One of these READMEs claimed 53 while the suite had grown past a hundred. The
+    engine repository keeps its count badge and holds it true with a test; a pack
+    has no such badge, and this keeps it that way rather than inviting a claim
+    nobody will maintain.
+    """
+    import re
+
+    assert not re.search(r"badge/tests?-\d+-", path.read_text(encoding="utf-8")), (
+        f"{path.name} claims a test count; either drop it or hold it true with a test"
+    )
