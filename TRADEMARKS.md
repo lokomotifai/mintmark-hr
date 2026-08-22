@@ -5,9 +5,12 @@ repository. It grants no right to the Mintmark name or to any Mintmark logo.
 
 ## Name status
 
-Mintmark is a provisional working name. Trademark screening at TURKPATENT,
-EUIPO, USPTO, and WIPO is not complete. Treat every use of the name here as
-provisional.
+Mintmark is the project's settled name. Trademark screening at TURKPATENT,
+EUIPO, USPTO, and WIPO cleared on 2026-08-22, the name is frozen, and the PyPI
+namespace is held by the project.
+
+Freezing the name does not widen what the licence grants. Everything below
+applies exactly as it did while the name was provisional.
 
 ## Fair community use
 

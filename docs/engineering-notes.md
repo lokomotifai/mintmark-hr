@@ -120,12 +120,21 @@ Before the first tagged release it is free. After, it is a decision.
 
 ## A version bump changes every emitted byte
 
-The pack version is part of the pack digest, and the digest seeds the streams. So
-raising `version` in `pack.yaml` changes every value in every record for a fixed
-seed, and the sample freshness test fails until the samples are regenerated.
+The pack version is one of the six inputs the engine derives every generation
+stream from, alongside the seed, the engine's major version, the pack name, the
+recipe name, and the site path. So raising `version` in `pack.yaml` changes every
+value in every record for a fixed seed, and the sample freshness test fails until
+the samples are regenerated.
 
 That reads like a bug the first time it happens. It is the opposite: version and
 content correspond exactly, so two datasets carrying the same pack version cannot
 differ, and nobody can quietly change what a version emits. The cost is that a
 bump is never free for anyone holding a published manifest, which is the reason
 the family treats one as a decision rather than a formality.
+
+The pack digest is a separate thing and does not seed anything. It records which
+declarations produced a dataset, so a consumer can tell whether the pack they
+hold is the pack it came from. An earlier note here said the version reached the
+streams by way of the digest. That was wrong, and worth correcting rather than
+quietly deleting: it is the kind of plausible mechanism somebody would go on to
+reason from.

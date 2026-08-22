@@ -7,8 +7,8 @@ contributors.
 Mintmark HR pack is licensed under the Apache License, Version 2.0. This NOTICE is
 informational and does not modify that license.
 
-Mintmark is a provisional working name. Trademark screening is not complete and
-the name is not frozen.
+Mintmark is the project's settled name, frozen on 2026-08-22 after trademark
+screening. See TRADEMARKS.md for what the name may and may not be used for.
 
 This repository vendors a Mintmark core wheel under vendor/ so that required CI
 runs offline. Its license and provenance are recorded in

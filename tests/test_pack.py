@@ -665,11 +665,15 @@ def _prose(path: Path) -> str:
 def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> None:
     """Bumping the version changes every emitted byte for a fixed seed.
 
-    The version is part of the pack digest and the digest seeds the streams, so
-    version and content correspond exactly: two datasets carrying the same pack
-    version cannot differ, and a bump is never a no-op for anyone holding a
+    The version is one of the six inputs every generation stream is derived from,
+    so version and content correspond exactly: two datasets carrying the same
+    pack version cannot differ, and a bump is never a no-op for anyone holding a
     published manifest. Worth a test because it is surprising, and because the
     sample freshness failure it causes reads like a bug until you know why.
+
+    The pack digest is a separate record and seeds nothing. An earlier version of
+    this docstring said the version reached the streams through the digest, which
+    was wrong.
     """
     import shutil
 
