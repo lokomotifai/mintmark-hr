@@ -3,6 +3,39 @@
 Decisions a reader of the declarations would otherwise have to reverse engineer,
 and the reasoning that would be lost if only the outcome were recorded.
 
+## The core is pinned twice
+
+`pack.yaml` declares `requires_core: ">=0.2,<0.3"`, which is the compatibility
+statement a consumer reads. Separately, `vendor/` carries a built core wheel with
+its SHA-256 in `vendor/CHECKSUMS`, and that is what required CI actually runs
+against, so the required checks need no network.
+
+The vendored artifact at this revision is `mintmark-0.2.0-py3-none-any.whl`. Both
+`vendor/CHECKSUMS` and `uv.lock` record its digest, and both live here and move in
+the same commit as the wheel, so neither is evidence about where the wheel came
+from. The weekly `core pin` workflow is the only check that reaches outside for an
+answer: it fetches the digest PyPI publishes for that exact version and compares.
+It used to print instructions and compare nothing while declaring `issues: write`
+and opening no issue, which is the failure mode this note now exists to prevent.
+
+On a mismatch, open an issue rather than replacing the wheel: a changed core
+changes emitted bytes, which is a version event rather than a refresh. Until
+`mintmark 0.2.0` is published on PyPI the check fails, and that is the accurate
+reading of the state: a vendored core nobody else can fetch is a core nobody else
+can verify.
+
+## The vendored wheel has to become the published one
+
+`vendor/` currently carries a locally built `mintmark-0.2.0-py3-none-any.whl`.
+The core publishes over trusted publishing from its own tag, and a wheel built
+twice does not produce the same bytes, so the digest recorded here will not match
+the one PyPI serves until this wheel is replaced with the published artifact.
+
+Do that once `mintmark 0.2.0` is on PyPI: download the published wheel, put it in
+`vendor/`, rewrite `vendor/CHECKSUMS` from it, run `uv lock --upgrade-package
+mintmark`, and confirm the suite and `packcheck` still pass. Until then the weekly
+`core pin` workflow reports a mismatch, and it is right to.
+
 ## Why a leave type carries no label
 
 `leave_record.type` is a structured enum: `yillik`, `mazeret`, `ucretsiz`,

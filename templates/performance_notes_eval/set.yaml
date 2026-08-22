@@ -1,49 +1,97 @@
 entries:
 - id: eval_health_religion
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:HEALTH}
-    beyani islendi.] [?special: Ayrica {entity:RELIGION} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:HEALTH} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:RELIGION} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_union_ethnicity
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:UNION}
-    beyani islendi.] [?special: Ayrica {entity:ETHNICITY} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina) {entity:UNION}
+    beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:ETHNICITY} notu eklendi.] (Kayit
+    tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_political_criminal
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:POLITICAL}
-    beyani islendi.] [?special: Ayrica {entity:CRIMINAL} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:POLITICAL} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:CRIMINAL} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_religion_biometric_ref
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:RELIGION}
-    beyani islendi.] [?special: Ayrica {entity:BIOMETRIC_REF} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:RELIGION} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:BIOMETRIC_REF}
+    notu eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_ethnicity_sexual_life
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:ETHNICITY}
-    beyani islendi.] [?special: Ayrica {entity:SEXUAL_LIFE} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:ETHNICITY} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:SEXUAL_LIFE} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_criminal_health
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:CRIMINAL}
-    beyani islendi.] [?special: Ayrica {entity:HEALTH} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:CRIMINAL} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:HEALTH} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_biometric_ref_union
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:BIOMETRIC_REF}
-    beyani islendi.] [?special: Ayrica {entity:UNION} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:BIOMETRIC_REF} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:UNION} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'
 - id: eval_sexual_life_political
   weight: '1'
-  text: 'Performans dosyasi kaydi. Calisan {entity:PERSON}, kimlik {id:TCKN}, dogum tarihi {entity:DOB}. Adres
-    {entity:ADDRESS}, telefon {id:PHONE}, eposta {id:EMAIL}. Ucret odemesi {id:IBAN} hesabina, sirket karti
-    {id:PAN}. Bagli oldugu tuzel kisi {entity:ORG}, vergi numarasi {id:VKN}. [?special: Dosyaya {entity:SEXUAL_LIFE}
-    beyani islendi.] [?special: Ayrica {entity:POLITICAL} notu eklendi.] Kayit tamamlandi.'
+  text: '(Performans dosyasi kaydi.|Donem degerlendirme kaydi.|Yonetici gorusme notu.|Ara degerlendirme
+    kaydi.) (Calisan|Personel|Degerlendirilen) {entity:PERSON}[?0.6:, birim {lex:departments_tr}],
+    (kimlik|TC kimlik numarasi|kimlik numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}].
+    [?0.55:(Adres|Ikametgah|Adres bilgisi) {entity:ADDRESS}. ][?0.7:(Iletisim|Telefon) {id:PHONE}[?0.6:,
+    (eposta|e-posta) {id:EMAIL}]. ](Ucret odemesi|Maas odemesi|Odeme talimati) {id:IBAN} (hesabina
+    islendi|hesabina yapildi|hesabina tanimlandi).[?0.35: (Sirket karti|Kurumsal kart) {id:PAN}.][?0.5:
+    (Bagli oldugu tuzel kisi|Gorevlendirildigi kurum|Ortak calisilan kurum) {entity:ORG}[?0.6:, (vergi
+    numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Dosyaya|Kayda|Ozluk dosyasina)
+    {entity:SEXUAL_LIFE} beyani islendi.][?special: (Ayrica|Ek olarak|Gorusmede) {entity:POLITICAL} notu
+    eklendi.] (Kayit tamamlandi.|Not dosyaya islendi.|Islem kapatildi.|Degerlendirme kapatildi.)'

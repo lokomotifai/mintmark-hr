@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Motor kodu yok" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i karşılandı" src="https://img.shields.io/badge/kapsam%20hedefleri-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Sürüm v0.1.1" src="https://img.shields.io/badge/sürüm-v0.1.1-3C873A?style=flat-square"></a>
+  <img alt="Sürüm v0.2.0" src="https://img.shields.io/badge/sürüm-v0.2.0-8A6412?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -49,9 +49,10 @@ ortamına taşınamaz. Bordro banka bilgisi taşır. İzin kayıtları hastalık
 taşır. İşe alım adli sicil kontrolü taşır. Bu paket o veriyi bildirir, motor da
 üretir: belirlenimci, aralık etiketli ve bir künye ile mühürlü.
 
-**Sürüm 0.1.1. İki referans veri kümesi
-[v0.1.1 sürümüne](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) ekli olarak
-yayımlandı; her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olanlar: `packcheck` sabitlenmiş
+**Sürüm 0.2.0, hazırlandı ve henüz etiketlenmedi. Referans veri kümeleri bu
+bildirimlerden basılıp etiket kesildiğinde
+v0.2.0 sürümüne eklenecek;
+her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olanlar: `packcheck` sabitlenmiş
 çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz
 kapsam hedefinin hepsini karşılıyor.
 
@@ -152,11 +153,11 @@ mintmark verify ./run
 Üretildiği hâliyle bir işe alım notu:
 
 ```
-Aday degerlendirme notu. Aday Mehmet Demir, basvurdugu pozisyon
-icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
-575 131 44 23, eposta kullanici4843.7421@example.net. Onceki
-isvereni Anka Lojistik. Teknik yetkinlik beklentiyi karsiliyor
-olarak notlandi. Surec sonraki asamaya gecti.
+Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon icin
+teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90 592
+723 56 80, eposta kullanici7917.9145@example.org. Onceki isvereni
+Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor olarak
+notlandi. Surec sonraki asamaya gecti.
 ```
 
 Bu, [`samples/recruiter_note.jsonl`](samples/recruiter_note.jsonl) dosyasındaki
@@ -170,9 +171,9 @@ karşılar.
 
 | Etiket grubu | Hedef | Ulaşılan |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | her biri 300 | her biri 3000 |
-| Sekiz özel nitelikli kategori | her biri 300 | 726 ile 773 arası |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | her biri 3000 |
+| PERSON, ADDRESS, ORG, DOB | her biri 300 | 1645 ile 3000 arası |
+| Sekiz özel nitelikli kategori | her biri 300 | 714 ile 776 arası |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | 806 ile 3000 arası |
 
 Sekiz özel nitelikli etiket ve her biri için 300 aralık, 2400 yerleştirme demek.
 Temel tarif özel oranını 0,06'da çalıştırır ve bu, temel belge hacminde o sayıya
@@ -183,15 +184,29 @@ kayıt türleridir; şablon başına iki özel yuva, etiketlere eşit dağıtıl
 Sigorta paketinin ikisi yerine üç belge ailesi olması aritmetiği burada rahat
 kılıyor.
 
-## Üç tarif
+### Bir belgenin bağlı olduğu kayıt hakkında söylemedikleri
+
+Belge gövdesindeki bir kimlik bilgisi taze bir çekimdir. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}` ve `{entity:PERSON}` ile adlandırılan kişi, belgenin bağlı olduğu
+kayıttan bağımsız çekilir; bu yüzden `EMP-00000123` kaydına bağlı bir belge başka
+birini adlandırır ve hiçbir çalışan satırının taşımadığı bir kimlik numarası
+anar. Aralıklar yine doğrudur: her biri etiketlediği yüzeyi gösterir ve bunlar
+üzerinde puanlanan bir detektör doğru puanlanır.
+
+Bunun dışarıda bıraktığı şey, iki tarafın uyuşmasını gerektiren her testtir. Bir
+maskeleme hattının aynı kişiye tabloda ve düz metinde aynı takma adı verip
+vermediğini ya da bir kontrolün, ana kaydının taşımadığı bir kimliği anan belgeyi
+yakalayıp yakalamadığını bu veriyle sınayamazsınız. Burada yazılı olmasının
+sebebi diğer yapısal kayıplarla aynı: biri birleştirme yapana kadar görünmez.
+
+## İki tarif
 
 | Tarif | Biçim | Ne için |
 | --- | --- | --- |
 | **workforce-baseline** | 6 000 çalışan, 11 000 görev satırı, 24 000 izin kaydı, 72 000 bordro kaydı ve 11 000 belge | Bir test ortamını iş gücü gibi davranan bir şeyle doldurmak |
 | **pii-eval** | 3 000 belge, her etiket hedefinin üzerinde | Türkçe İK metninde bir dedektörü ölçmek |
-| **anomaly-mix** | Temel tarif artı her bordro kaydında etiketli bir anomali alanı | Bir izleme sistemini gerçek referansa karşı puanlamak |
 
-### anomaly-mix'in açıkça belirtilen bir sınırı
+### Anomali alanlarının açıkça belirtilen bir sınırı
 
 Her bordro kaydı `anomaly_kind` ve `is_anomaly` taşır ve ikisi asla çelişmez. Ama
 türler **bildirilmiş oranlarda çekilen satır başı etiketlerdir; gerçek zamansal
@@ -239,7 +254,7 @@ aittir. Kaydın tamamı
 ```
 pack.yaml           kimlik, çekirdek sabitlemesi, izin verilen kimlik politikaları
 fields/             üretim sırasına göre kayıt türü başına bir dosya
-recipes/            workforce-baseline, pii-eval, anomaly-mix
+recipes/            workforce-baseline, pii-eval
 templates/          temel kümeler ve ayrı değerlendirme kümeleri
 lexicons/           kurgusal işverenler, unvanlar ve birimler, denylist ve bu
                     paketin reddettiği klinik ve itham söz dağarları
@@ -263,11 +278,17 @@ Hepsi paketlenmiş çekirdek wheel'e karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.1.1, yayımlandı. İki referans veri kümesi
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümüne ekli;
-[docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
-tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
-[`mintmark`](https://pypi.org/project/mintmark/) olarak yayımlanmıştır.
+Sürüm 0.2.0, henüz etiketlenmedi. Bu sürüm sabit bir tohum için üretilen baytları
+oynatıyor; bu depo ailesi buna ana sürüm olayı diyor: çekirdek şablon ağırlıklarını
+uygulamaya başladı ve hem çekirdek hem bu paket, bir belgenin çektiği yüzey
+dağarcığını genişletti. v0.1.1 sürümüne ekli referans veri kümeleri geçerli kalır
+ve kendi manifestlerinin kaydettiği çekirdek ve paket sürümleriyle yeniden
+üretilebilir olmayı sürdürür. Yenileri, etiket kesildiğinde bu bildirimlerden
+[docs/reference-datasets.json](docs/reference-datasets.json) içindeki tohumlarla
+basılır. Motor PyPI'da [`mintmark`](https://pypi.org/project/mintmark/) olarak
+duruyor ve haftalık sabitleme kontrolü 0.2.0 orada yayımlanana kadar kırmızı
+kalıyor; bu da doğru: başkasının çekemediği bir çekirdek, başkasının
+denetleyemediği bir çekirdektir.
 
 Bu paket diğerlerinde olmayan bir yönetişim kontrol noktası taşıyor: temel özel
 oran ve özel nitelikli şablon alt kümesinin tamamı, herhangi bir kamuya açık

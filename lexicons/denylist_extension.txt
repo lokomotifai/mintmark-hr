@@ -1,5 +1,12 @@
-# Pack denylist extension. Inherits the core list and the insurance pack's
-# insurer entries in full, and may only grow.
+# Pack denylist extension. One list across the pack family: the core's banks,
+# every real insurer, and every real holding and industrial company a fictional
+# name in any of these packs could land on. It may only grow.
+#
+# It is one list because the packs invent the same kinds of name. This pack
+# invents employers, the banking pack invents counterparties, the insurance pack
+# invents corporate insureds, and a list built for one of those cannot catch a
+# collision in another. Each pack scans its own lexicons, its own templates, and
+# its own minted output against this file rather than against the core's.
 #
 # Real Turkish financial institutions. A generated name must never collide
 # with any entry here. Packs may extend this list and may never shrink it.

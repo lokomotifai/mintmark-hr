@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Release v0.1.1" src="https://img.shields.io/badge/release-v0.1.1-3C873A?style=flat-square"></a>
+  <img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -50,9 +50,10 @@ test environment. Payroll carries bank details. Leave records carry sick days.
 Recruiting carries criminal record checks. This pack declares that data, and the
 engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.1.1. Two reference datasets are published as assets on
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), each
-carrying its own manifest and checksums.** What is true today: `packcheck` passes against
+**Version 0.2.0, prepared and not tagged yet. Its reference datasets are minted
+from these declarations and attached to
+v0.2.0 when the tag
+is cut, each carrying its own manifest and checksums.** What is true today: `packcheck` passes against
 the pinned core, the test suite passes, and the evaluation recipe meets every one
 of its eighteen coverage targets.
 
@@ -154,11 +155,11 @@ mintmark verify ./run
 One recruiter note, as emitted:
 
 ```
-Aday degerlendirme notu. Aday Mehmet Demir, basvurdugu pozisyon
-icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
-575 131 44 23, eposta kullanici4843.7421@example.net. Onceki
-isvereni Anka Lojistik. Teknik yetkinlik beklentiyi karsiliyor
-olarak notlandi. Surec sonraki asamaya gecti.
+Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon icin
+teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90 592
+723 56 80, eposta kullanici7917.9145@example.org. Onceki isvereni
+Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor olarak
+notlandi. Surec sonraki asamaya gecti.
 ```
 
 That is the first record in [`samples/recruiter_note.jsonl`](samples/recruiter_note.jsonl),
@@ -170,9 +171,9 @@ not an illustration written for the README. A test compares the two.
 
 | Label group | Target | Achieved |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | 300 each | 3000 each |
-| The eight special categories | 300 each | 726 to 773 |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 3000 each |
+| PERSON, ADDRESS, ORG, DOB | 300 each | 1645 to 3000 |
+| The eight special categories | 300 each | 714 to 776 |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 806 to 3000 |
 
 Eight special-category labels at 300 spans each is 2400 injections. The baseline
 recipe runs its special rate at 0.06, which across baseline document volume
@@ -183,15 +184,29 @@ one, two special slots each, spread evenly across the labels. Three document
 families rather than the insurance pack's two makes the arithmetic comfortable
 here.
 
-## The three recipes
+### What a document does not tell you about its record
+
+An identifier inside a document body is a fresh draw. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}` and the person `{entity:PERSON}` names are drawn independently of the
+record the document is attached to, so a document linked to `EMP-00000123` names
+somebody else and cites a national identity number no employee row carries. The
+spans are still right: each one points at the surface it labels, and a detector
+scored on them is scored correctly.
+
+What this rules out is anything that needs the two sides to agree. Checking that a
+redaction pipeline gives one person the same pseudonym in a table and in prose, or
+that a control catches a document citing an identifier its master record does not
+hold, cannot be done with this data. It is stated here for the same reason the
+other structural losses are: it is invisible until somebody joins on it.
+
+## The two recipes
 
 | Recipe | Shape | For |
 | --- | --- | --- |
 | **workforce-baseline** | 6 000 employees, 11 000 position rows, 24 000 leave records, 72 000 payroll entries, and 11 000 documents | Filling a test environment with something that behaves like a workforce |
 | **pii-eval** | 3 000 documents, every label above its target | Measuring a detector on Turkish HR text |
-| **anomaly-mix** | The baseline plus a labeled anomaly field on every payroll entry | Scoring a monitoring system against ground truth |
 
-### A limitation of anomaly-mix, stated plainly
+### A limitation of the anomaly fields, stated plainly
 
 Every payroll entry carries `anomaly_kind` and `is_anomaly`, and the two never
 disagree. But the kinds are **per-row labels drawn at declared rates, not genuine
@@ -200,7 +215,7 @@ breaks a pattern across an employee's other months; here it is a label on one ro
 
 That is a limit of the pack contract rather than an oversight: each field is drawn
 from an independent stream, so a pack cannot declare a pattern that correlates
-rows. Use this recipe to check that your pipeline carries labels through
+rows. Use these fields to check that your pipeline carries labels through
 correctly. Do not use it to measure whether a detector finds real patterns.
 
 ## A denylist that fired on our own people
@@ -236,7 +251,7 @@ is in [docs/normative-verification.md](docs/normative-verification.md).
 ```
 pack.yaml           identity, the core pin, the allowed identifier policies
 fields/             one file per record type, in generation order
-recipes/            workforce-baseline, pii-eval, anomaly-mix
+recipes/            workforce-baseline, pii-eval
 templates/          baseline sets, and the separate evaluation sets
 lexicons/           invented employers, titles and departments, the denylist,
                     and the clinical and accusatory vocabularies this pack refuses
@@ -260,11 +275,16 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.1.1, released. Two reference datasets are attached to
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), minted with the
-safe identifier policy at the seeds declared in
-[docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
-[`mintmark`](https://pypi.org/project/mintmark/).
+Version 0.2.0, not tagged yet. This version moves emitted bytes for a fixed seed,
+which this project family calls a major version event: the core began honouring
+template weights, and both the core and this pack widened the surface vocabularies
+a document draws from. The reference datasets attached to v0.1.1 stay valid and
+stay reproducible, with the core and pack versions their own manifests record. New
+ones are minted from these declarations at the seeds in
+[docs/reference-datasets.json](docs/reference-datasets.json) when the tag is cut.
+The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/), and the
+weekly pin check stays red until 0.2.0 is published there, which is accurate: a
+vendored core nobody else can fetch is a core nobody else can check.
 
 This pack carries one governance checkpoint the other packs do not: the baseline
 special rate and the full special-category template subset need a recorded

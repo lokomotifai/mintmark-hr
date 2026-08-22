@@ -1,6 +1,6 @@
 [project]
 name = "mintmark-hr"
-version = "0.1.0"
+version = "0.2.0"
 description = "Synthetic Turkish HR and payroll records with span-labeled employment documents."
 requires-python = ">=3.12,<3.13"
 license = "Apache-2.0"
@@ -19,7 +19,7 @@ dev = [
 # Required CI runs offline against the vendored wheel, whose SHA-256 is recorded
 # in vendor/CHECKSUMS and confirmed against the core repository by a separated,
 # network-labeled workflow.
-mintmark = { path = "vendor/mintmark-0.1.3-py3-none-any.whl" }
+mintmark = { path = "vendor/mintmark-0.2.0-py3-none-any.whl" }
 
 [tool.ruff]
 line-length = 100

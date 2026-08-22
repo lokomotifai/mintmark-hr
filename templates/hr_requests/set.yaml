@@ -2,13 +2,13 @@ entries:
 - id: req_document
   weight: '0.45'
   text: 'Calisan talebi. Talep sahibi {entity:PERSON}, sicil {field:hr_request.employee_id}, kanal
-    {field:hr_request.channel}. (Calisma belgesi|Bordro ornegi|Vizite kagidi) talep edildi. Belgenin
+    {field:hr_request.channel}, birim {lex:departments_tr}. (Calisma belgesi|Bordro ornegi|Vizite kagidi) talep edildi. Belgenin
     {id:EMAIL} adresine gonderilmesi istendi. [?0.3: Adres bilgisi {entity:ADDRESS} olarak guncellendi.]
     Talep (karsilandi|islemde).'
 - id: req_leave
   weight: '0.55'
   text: 'Calisan talebi. Talep sahibi {entity:PERSON}, sicil {field:hr_request.employee_id}, kanal
-    {field:hr_request.channel}. (Yillik izin|Mazeret izni|Ucretsiz izin) talebi iletildi. Talep edilen
+    {field:hr_request.channel}, birim {lex:departments_tr}. (Yillik izin|Mazeret izni|Ucretsiz izin) talebi iletildi. Talep edilen
     donem icin yerine bakacak kisi {entity:PERSON} olarak bildirildi. [?0.25: Ulasilabilecek numara
     {id:PHONE}.] [?special: Talebe gerekce olarak {entity:HEALTH} durumu belirtildi ve rapor eklendi.]
     Talep (onaylandi|degerlendirmede|reddedildi).'

@@ -20,10 +20,11 @@ jobs:
     name: packcheck, tests, prose
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
           enable-cache: true
+          version: "0.12.3"
       - name: Verify the vendored core before trusting it
         run: |
           cd vendor && shasum -a 256 -c CHECKSUMS
@@ -37,31 +38,40 @@ jobs:
     name: private-corpus canary
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
           enable-cache: true
+          version: "0.12.3"
       - run: uv sync --locked
-      # The canary is never committed. A missing secret fails this step by design.
-      #
-      # The one exception is Dependabot, which GitHub does not give repository
-      # secrets to. The scan is skipped there and nowhere else, and the job
-      # itself always runs and always reports: it is a required status check, and
-      # a skipped job leaves that check unreported, which blocks the pull request
-      # forever.
-      #
-      # The condition names the actor rather than testing whether the secret is
-      # empty. A control that disables itself the moment its input goes missing
-      # is not a control.
+
+      # The scan needs the canary, and GitHub does not give repository secrets to
+      # a workflow triggered by a pull request from a fork. The old arrangement
+      # ran the scan on every pull request anyway, so the required check failed on
+      # every external contribution, and the only shape that would have fixed it,
+      # pull_request_target, hands the secret to code the fork controls. Neither
+      # is acceptable, so the scan runs where the secret exists: on the push to
+      # main, which is the last point before anything is published.
       - name: Scan tree for private-corpus canary
-        if: github.actor != 'dependabot[bot]'
+        if: github.event_name == 'push'
         env:
           MINTMARK_CANARY: ${{ secrets.MINTMARK_CANARY }}
         run: uv run python tools/canary.py .
-      - name: Record why the scan was skipped
-        if: github.actor == 'dependabot[bot]'
+
+      # A pull request cannot run the scan, so it proves the tripwire is still
+      # armed instead: the scanner has to refuse a wrong canary and a missing one.
+      # That is the property a change to tools/canary.py could quietly remove, and
+      # it is checkable without the secret.
+      - name: Prove the tripwire still fails closed
+        if: github.event_name == 'pull_request'
         run: |
-          echo "Skipped: repository secrets are not available to Dependabot," >> "$GITHUB_STEP_SUMMARY"
-          echo "so the canary cannot be supplied here. This branch changes only" >> "$GITHUB_STEP_SUMMARY"
-          echo "the lockfile and workflow pins, and the tree is scanned on the" >> "$GITHUB_STEP_SUMMARY"
-          echo "push to main that follows the merge." >> "$GITHUB_STEP_SUMMARY"
+          if MINTMARK_CANARY='not-the-canary' uv run python tools/canary.py . ; then
+            echo "tools/canary.py accepted a canary that does not match the committed digest"
+            exit 1
+          fi
+          if env -u MINTMARK_CANARY uv run python tools/canary.py . ; then
+            echo "tools/canary.py accepted a missing canary"
+            exit 1
+          fi
+          echo "The tripwire refuses a wrong canary and a missing one." >> "$GITHUB_STEP_SUMMARY"
+          echo "The tree itself is scanned on the push to main that follows the merge." >> "$GITHUB_STEP_SUMMARY"
