@@ -24,18 +24,19 @@ changes emitted bytes, which is a version event rather than a refresh. Until
 reading of the state: a vendored core nobody else can fetch is a core nobody else
 can verify.
 
-## The vendored wheel has to become the published one
+## The vendored wheel is the published one
 
-`vendor/` currently carries a locally built `mintmark-0.2.0-py3-none-any.whl`.
-The core publishes over trusted publishing from its own tag, and a wheel built
-twice does not produce the same bytes, so the digest recorded here will not match
-the one PyPI serves until this wheel is replaced with the published artifact.
+`vendor/` carries `mintmark-0.2.0-py3-none-any.whl` at SHA-256
+`cc1584375eb5be3fa175d690064a050e5325bafd624e60ddbc745464f4d0ac29`, which is the
+digest PyPI serves for that version. The core builds with `uv build` from a
+locked backend, and that build turned out to be reproducible: the wheel built
+here before the release and the wheel the release workflow published are the same
+bytes.
 
-Do that once `mintmark 0.2.0` is on PyPI: download the published wheel, put it in
-`vendor/`, rewrite `vendor/CHECKSUMS` from it, run `uv lock --upgrade-package
-mintmark`, and confirm the suite and `packcheck` still pass. Until then the weekly
-`core pin` workflow reports a mismatch, and it is right to.
-
+Do not rely on that by accident. The weekly `core pin` workflow is what actually
+holds the claim, because it fetches the published digest and compares. If a
+future build stops reproducing, that check goes red and the fix is to vendor the
+published artifact rather than to relax the check.
 ## Why a leave type carries no label
 
 `leave_record.type` is a structured enum: `yillik`, `mazeret`, `ucretsiz`,
