@@ -619,16 +619,21 @@ def test_each_readme_names_the_release_that_actually_exists(path: Path) -> None:
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
-def test_neither_readme_claims_the_engine_is_on_a_package_index(path: Path) -> None:
-    """It is not, and the name there is unclaimed.
+def test_each_readme_installs_the_engine_from_where_it_now_lives(path: Path) -> None:
+    """This used to assert the engine was on no index, which held until it was.
 
-    Telling a reader to install by package name would install whatever somebody
-    else eventually puts under that name.
+    The failure worth guarding now is the opposite one: a README still routing a
+    reader through the git workaround, or through a name that is not there.
     """
-    text = path.read_text(encoding="utf-8").lower()
-    assert "pypi.org/project" not in text
-    assert "uv tool install mintmark\n" not in text
-    assert "pip install mintmark" not in text
+    text = path.read_text(encoding="utf-8")
+    assert "uv tool install mintmark" in text, f"{path.name} does not install the engine"
+    assert "https://pypi.org/project/mintmark/" in text, (
+        f"{path.name} does not link the published engine"
+    )
+    assert "git+https://github.com/lokomotifai/mintmark" not in text, (
+        f"{path.name} still installs from git, which was the workaround for not "
+        f"being on an index"
+    )
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])

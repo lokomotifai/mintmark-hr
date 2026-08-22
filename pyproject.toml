@@ -19,7 +19,7 @@ dev = [
 # Required CI runs offline against the vendored wheel, whose SHA-256 is recorded
 # in vendor/CHECKSUMS and confirmed against the core repository by a separated,
 # network-labeled workflow.
-mintmark = { path = "vendor/mintmark-0.1.0-py3-none-any.whl" }
+mintmark = { path = "vendor/mintmark-0.1.2-py3-none-any.whl" }
 
 [tool.ruff]
 line-length = 100

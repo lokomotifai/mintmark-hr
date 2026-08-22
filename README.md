@@ -142,8 +142,7 @@ rather than discovered after ingest.
 ## Mint it yourself
 
 ```bash
-# The engine is not on PyPI yet; install it from the repository.
-uv tool install git+https://github.com/lokomotifai/mintmark
+uv tool install mintmark
 git clone https://github.com/lokomotifai/mintmark-hr
 cd mintmark-hr
 
@@ -264,8 +263,8 @@ All of it runs offline against the vendored core wheel.
 Version 0.1.1, released. Two reference datasets are attached to
 [v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), minted with the
 safe identifier policy at the seeds declared in
-[docs/reference-datasets.json](docs/reference-datasets.json). The engine is not on
-PyPI yet, so install it from its repository.
+[docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
+[`mintmark`](https://pypi.org/project/mintmark/).
 
 This pack carries one governance checkpoint the other packs do not: the baseline
 special rate and the full special-category template subset need a recorded

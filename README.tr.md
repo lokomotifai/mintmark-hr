@@ -140,8 +140,7 @@ ve veri alındıktan sonra keşfedilmek yerine burada belirtilmiştir.
 ## Kendiniz üretin
 
 ```bash
-# Motor henüz PyPI'de değil; depodan kurun.
-uv tool install git+https://github.com/lokomotifai/mintmark
+uv tool install mintmark
 git clone https://github.com/lokomotifai/mintmark-hr
 cd mintmark-hr
 
@@ -267,8 +266,8 @@ Hepsi paketlenmiş çekirdek wheel'e karşı çevrimdışı çalışır.
 Sürüm 0.1.1, yayımlandı. İki referans veri kümesi
 [v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümüne ekli;
 [docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
-tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor henüz PyPI'de
-değil, bu yüzden deposundan kurun.
+tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
+[`mintmark`](https://pypi.org/project/mintmark/) olarak yayımlanmıştır.
 
 Bu paket diğerlerinde olmayan bir yönetişim kontrol noktası taşıyor: temel özel
 oran ve özel nitelikli şablon alt kümesinin tamamı, herhangi bir kamuya açık
