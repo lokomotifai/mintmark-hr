@@ -10,9 +10,9 @@ license = "Apache-2.0"
 [dependency-groups]
 dev = [
   "mintmark",
-  "pytest>=8.3,<9",
+  "pytest>=8.3,<10",
   "pyyaml>=6.0,<7",
-  "ruff>=0.14,<0.15",
+  "ruff>=0.14,<0.17",
 ]
 
 [tool.uv.sources]
