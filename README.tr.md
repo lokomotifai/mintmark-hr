@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Motor kodu yok" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i karşılandı" src="https://img.shields.io/badge/kapsam%20hedefleri-18%2F18-3C873A?style=flat-square">
-  <img alt="Geliştirme sürümü 0.2.0" src="https://img.shields.io/badge/geliştirme-v0.2.0-C98A2B?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0"><img alt="Sürüm v0.2.0" src="https://img.shields.io/badge/sürüm-v0.2.0-8A6412?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -49,11 +49,11 @@ ortamına taşınamaz. Bordro banka bilgisi taşır. İzin kayıtları hastalık
 taşır. İşe alım adli sicil kontrolü taşır. Bu paket o veriyi bildirir, motor da
 üretir: belirlenimci, aralık etiketli ve bir künye ile mühürlü.
 
-**Geliştirme sürümü 0.2.0. En son yayımlanan referans veri kümeleri
-[v0.1.1 sürümünde](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) kalır;
-bu depo değişikliği 0.2.0 veri kümesi yayımlamaz.** Bugün doğru olanlar: `packcheck` sabitlenmiş
-çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz
-kapsam hedefinin hepsini karşılıyor.
+**Sürüm 0.2.0. Referans veri kümeleri
+[v0.2.0 sürümüne](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0)
+eklenmiştir; her biri kendi künyesini ve sağlamalarını taşır.** `packcheck`
+sabitlenmiş çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi
+on sekiz kapsam hedefinin hepsini karşılıyor.
 
 > [!IMPORTANT]
 > **Bu paket ne değildir.** İK sisteminizin anonimleştirmesi değildir; hiçbir veri
@@ -269,17 +269,15 @@ Hepsi paketlenmiş çekirdek wheel'e karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.2.0 geliştirme aşamasındadır. En son yayımlanan iki referans veri kümesi
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümünde kalır;
-[docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
-tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
+Sürüm 0.2.0 yayımlanmıştır. İki referans veri kümesi
+[v0.2.0](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0)
+sürümüne eklenmiştir; [docs/reference-datasets.json](docs/reference-datasets.json)
+içinde bildirilen tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
 [`mintmark`](https://pypi.org/project/mintmark/) olarak yayımlanmıştır.
 
-Bu paket diğerlerinde olmayan bir yönetişim kontrol noktası taşıyor: temel özel
-oran ve özel nitelikli şablon alt kümesinin tamamı, herhangi bir kamuya açık
-yayın yüzeyi oluşmadan önce kayıt altına alınmış bir onay gerektiriyor. Referans
-veri kümelerinin yayımlanması ve veri kümesi lisansının teyidi bunun üzerine
-gelen olağan dış kontrol noktalarıdır.
+v0.2.0 sürümü; temel özel oran, özel nitelikli şablon alt kümesinin tamamı,
+referans veri kümelerinin yayımlanması ve bildirilen veri kümesi lisansı için
+sahibin onayını kaydeder.
 
 ## Topluluk sözleşmesi
 
@@ -299,7 +297,6 @@ Referans veri kümeleri **CC BY 4.0** ile lisanslıdır: ticari kullanım dahil 
 amaçla kullanabilirsiniz, kaynağı belirtmeniz yeterlidir. Her veri kümesi kendi
 atıf satırını `MINTMARK.json` içinde taşır ve `mintmark verify` bunu yazdırır;
 elle bir şey kurmanız gerekmez. Bakınız
-[LICENSE-DATASETS.md](LICENSE-DATASETS.md). Hukuki teyit beklemektedir; burada
-hiçbir şey bunu yerleşik olarak belirtmez.
+[LICENSE-DATASETS.md](LICENSE-DATASETS.md).
 
 <p align="center"><sub>Mintmark ailesinin parçası: <a href="https://github.com/lokomotifai/mintmark">motor</a> · <a href="https://github.com/lokomotifai/mintmark-banking">bankacılık</a> · <a href="https://github.com/lokomotifai/mintmark-insurance">sigorta</a></sub></p>

@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <img alt="Development version 0.2.0" src="https://img.shields.io/badge/development-v0.2.0-C98A2B?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -50,11 +50,11 @@ test environment. Payroll carries bank details. Leave records carry sick days.
 Recruiting carries criminal record checks. This pack declares that data, and the
 engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Development version 0.2.0. The latest published reference datasets remain on
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1); no 0.2.0
-dataset is published by this repository change.** What is true today: `packcheck` passes against
-the pinned core, the test suite passes, and the evaluation recipe meets every one
-of its eighteen coverage targets.
+**Release 0.2.0. Its reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0), each
+carrying its own manifest and checksums.** `packcheck` passes against the pinned
+core, the test suite passes, and the evaluation recipe meets every one of its
+eighteen coverage targets.
 
 > [!IMPORTANT]
 > **What this pack is not.** It is not anonymization of your HR system; it ingests
@@ -267,17 +267,15 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.2.0 is under development. The latest published reference datasets remain attached to
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1); they were minted with the
-safe identifier policy at the seeds declared in
+Version 0.2.0 is released. Its two reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0); they
+were minted with the safe identifier policy at the seeds declared in
 [docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
 [`mintmark`](https://pypi.org/project/mintmark/).
 
-This pack carries one governance checkpoint the other packs do not: the baseline
-special rate and the full special-category template subset need a recorded
-sign-off before any public launch surface exists. Publishing the reference
-datasets and confirming the dataset license are the usual external checkpoints on
-top of that.
+Release v0.2.0 records the owner's sign-off for the baseline special rate, the
+full special-category template subset, publication of the reference datasets,
+and the declared dataset license.
 
 ## Community contract
 
@@ -295,7 +293,6 @@ right to the Mintmark name or logo; see [TRADEMARKS.md](TRADEMARKS.md).
 Reference datasets are licensed **CC BY 4.0**: use them for anything, including
 commercially, and credit the source. Every dataset carries its own credit line in
 `MINTMARK.json` and `mintmark verify` prints it, so nothing has to be assembled by
-hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md). Pending legal confirmation;
-nothing here states it as settled.
+hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md).
 
 <p align="center"><sub>Part of the Mintmark family: <a href="https://github.com/lokomotifai/mintmark">the engine</a> · <a href="https://github.com/lokomotifai/mintmark-banking">banking</a> · <a href="https://github.com/lokomotifai/mintmark-insurance">insurance</a></sub></p>

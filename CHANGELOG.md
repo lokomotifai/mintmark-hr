@@ -15,7 +15,7 @@ from, so raising the version is itself such a change. Version and content
 correspond exactly, which is the point. The pack digest is a separate record of
 which declarations produced a dataset and seeds nothing.
 
-## 0.2.0 - Unreleased
+## 0.2.0 - 2026-08-23
 
 ### Security
 
