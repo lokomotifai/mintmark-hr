@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
+import tempfile
 import sys
 from pathlib import Path
 
@@ -19,7 +20,7 @@ import yaml
 from mintmark.annotate import ALL_LABELS
 from mintmark.lexicons import load as load_denylist
 from mintmark.lexicons import parse as parse_denylist
-from mintmark.mint import asset_dir, mint
+from mintmark.mint import MintError, asset_dir, mint
 from mintmark.packs.model import load_pack
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -662,13 +663,14 @@ def test_each_readme_declares_both_boundaries(path: Path) -> None:
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
-def test_each_readme_names_the_release_that_actually_exists(path: Path) -> None:
+def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     """A README may claim a release, and the claim has to be the right one.
 
     This replaced a test that asserted nothing was published, which was correct
-    until something was. The failure it now guards is subtler and likelier: a
-    version bump that leaves the README pointing at a tag nobody cut, or at an
-    older one whose datasets no longer reproduce from these declarations.
+    until something was. The failure it guards is subtler and likelier: a version
+    bump that leaves the README pointing at an older tag whose datasets no longer
+    reproduce from these declarations. A version prepared but not yet tagged is a
+    real state too, and the README may hold it by saying so.
     """
     text = path.read_text(encoding="utf-8")
     assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
@@ -782,4 +784,121 @@ def test_no_readme_claims_a_test_count(path: Path) -> None:
 
     assert not re.search(r"badge/tests?-\d+-", path.read_text(encoding="utf-8")), (
         f"{path.name} claims a test count; either drop it or hold it true with a test"
+    )
+
+
+# Declarations that have to be controls.
+#
+# Each test below pins something that was declared here, asserted here, and read
+# by nothing: an identifier policy the engine ignored, a lexicon no generator
+# reached, a template vocabulary small enough to memorize. They are grouped so a
+# reader can see the class rather than four unrelated checks.
+
+
+def test_the_pack_allows_only_the_safe_policy() -> None:
+    """The pack manifest is the gate that actually holds.
+
+    A recipe naming `safe` used to be read by nothing, so the allowlist here was
+    the only thing between a caller and checksum-valid identifiers. TCKN and VKN
+    have no unassignable range the way IBAN and PAN do, so a checksum-valid one is
+    indistinguishable from an issued number.
+    """
+    assert PACK.allowed_identifier_policies == ("safe",)
+
+
+def test_a_recipe_policy_pin_refuses_a_conflicting_flag() -> None:
+    """Passing the flag used to override the recipe silently."""
+    with pytest.raises((MintError, ValueError)):
+        mint(
+            pack=ROOT,
+            recipe="workforce-baseline",
+            seed=1,
+            out=Path(tempfile.mkdtemp()) / "refused",
+            identifier_policy="validator",
+            records={},
+            invocation="pytest",
+        )
+
+
+def test_every_declared_lexicon_reaches_the_generators() -> None:
+    """Loading refuses an unreachable lexicon, so this states the count it holds."""
+    declared = {p.stem for p in (ROOT / "lexicons").glob("*.yaml")}
+    reached = {
+        f.generator_argument
+        for record_type in PACK.record_types
+        for f in record_type.fields
+        if f.generator_kind == "lexicon"
+    }
+    reached |= {name for names in PACK.entity_lexicons.values() for name in names}
+    templates = "\n".join(
+        p.read_text(encoding="utf-8") for p in sorted((ROOT / "templates").rglob("*.yaml"))
+    )
+    reached |= set(re.findall(r"{lex:\s*([a-z][a-z0-9_]*)\s*}", templates))
+    assert declared <= reached, f"unreachable: {sorted(declared - reached)}"
+
+
+def test_the_pack_contributes_its_own_organization_surfaces() -> None:
+    """Without this every pack in the family drew ORG from the same twelve names."""
+    assert "employers_fictional" in PACK.entity_lexicons.get("ORG", ())
+
+
+@pytest.fixture(scope="module")
+def evaluation_mint(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    out = tmp_path_factory.mktemp("pack") / "vocabulary"
+    mint(
+        pack=ROOT,
+        recipe="pii-eval",
+        seed=11,
+        out=out,
+        records={"employee": 40, "position_history": 40, "leave_record": 40,
+            "payroll_entry": 40, "performance_note_eval": 200,
+            "recruiter_note_eval": 0, "hr_request_eval": 0},
+        invocation="pytest",
+    )
+    return out
+
+
+def test_the_evaluation_documents_are_not_one_sentence_repeated(evaluation_mint: Path) -> None:
+    """The defect this replaced: 3000 documents over 24 distinct shapes, every
+    entity at a fixed offset behind a fixed cue word. A gazetteer and six regular
+    expressions scored near perfectly on it, which says nothing about production."""
+    bodies = {}
+    for line in (evaluation_mint / "performance_note_eval.jsonl").read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            record = json.loads(line)
+            key = next(v for k, v in record.items() if k.endswith("_id"))
+            bodies[key] = record["body"]
+
+    skeletons, organizations = set(), set()
+    sidecar = evaluation_mint / "performance_note_eval.labels.jsonl"
+    for line in sidecar.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        record = json.loads(line)
+        text = bodies[record["doc_id"]]
+        masked = text
+        for span in sorted(record["spans"], key=lambda s: -s["start"]):
+            surface = text[span["start"] : span["end"]]
+            if span["label"] == "ORG":
+                organizations.add(surface)
+            masked = masked[: span["start"]] + f"<{span['label']}>" + masked[span["end"] :]
+        skeletons.add(masked)
+
+    assert len(skeletons) > len(bodies) * 0.5, (
+        f"{len(skeletons)} distinct shapes across {len(bodies)} documents; the set "
+        "measures memorization rather than detection"
+    )
+    assert len(organizations) > 12, (
+        f"only {len(organizations)} organization surfaces; the core list alone is twelve"
+    )
+
+
+@pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
+def test_each_readme_states_that_document_identifiers_are_fresh_draws(path: Path) -> None:
+    """A consumer joining a document to its record gets two different people, and
+    the loss is invisible until they do."""
+    text = " ".join(path.read_text(encoding="utf-8").split())
+    assert "fresh draw" in text or "taze bir çekim" in text, (
+        f"{path.name} does not state that a document identifier is drawn "
+        "independently of the record the document is attached to"
     )

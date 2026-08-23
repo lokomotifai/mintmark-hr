@@ -170,9 +170,9 @@ not an illustration written for the README. A test compares the two.
 
 | Label group | Target | Achieved |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | 300 each | 3000 each |
-| The eight special categories | 300 each | 726 to 773 |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 3000 each |
+| PERSON, ADDRESS, ORG, DOB | 300 each | 1645 to 3000 |
+| The eight special categories | 300 each | 714 to 776 |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 806 to 3000 |
 
 Eight special-category labels at 300 spans each is 2400 injections. The baseline
 recipe runs its special rate at 0.06, which across baseline document volume

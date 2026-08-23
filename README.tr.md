@@ -170,9 +170,9 @@ karşılar.
 
 | Etiket grubu | Hedef | Ulaşılan |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | her biri 300 | her biri 3000 |
-| Sekiz özel nitelikli kategori | her biri 300 | 726 ile 773 arası |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | her biri 3000 |
+| PERSON, ADDRESS, ORG, DOB | her biri 300 | 1645 ile 3000 arası |
+| Sekiz özel nitelikli kategori | her biri 300 | 714 ile 776 arası |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | 806 ile 3000 arası |
 
 Sekiz özel nitelikli etiket ve her biri için 300 aralık, 2400 yerleştirme demek.
 Temel tarif özel oranını 0,06'da çalıştırır ve bu, temel belge hacminde o sayıya
