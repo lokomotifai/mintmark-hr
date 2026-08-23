@@ -66,3 +66,8 @@ def test_ci_scans_built_release_archives_explicitly() -> None:
     assert "Build final reference artifacts before the release gate" in workflow
     assert 'for artifact in "${artifacts[@]}"; do test -s "$artifact"; done' in workflow
     assert 'tools/canary.py . "${artifacts[@]}"' in workflow
+
+
+def test_release_cli_has_explicit_repository_context() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    assert "GH_REPO: ${{ github.repository }}" in workflow

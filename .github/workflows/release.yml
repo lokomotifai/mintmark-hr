@@ -118,6 +118,7 @@ jobs:
           subject-path: release-assets/*.tar.gz
       - name: Create the immutable release
         env:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ inputs.version }}
         run: |
