@@ -1,97 +1,50 @@
 entries:
 - id: eval_health_religion
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:HEALTH} beyan edildi.][?special: (Ayrica|Ek belge olarak)
-    {entity:RELIGION} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:HEALTH} beyan edildi.][?special: Ayrica
+    {entity:RELIGION} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_union_ethnicity
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:UNION} beyan edildi.][?special: (Ayrica|Ek belge olarak)
-    {entity:ETHNICITY} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:UNION} beyan edildi.][?special: Ayrica
+    {entity:ETHNICITY} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_political_criminal
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:POLITICAL} beyan edildi.][?special: (Ayrica|Ek belge
-    olarak) {entity:CRIMINAL} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:POLITICAL} beyan edildi.][?special: (Ayrica|Ek belge
+    olarak) {entity:CRIMINAL} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_religion_biometric_ref
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:RELIGION} beyan edildi.][?special: (Ayrica|Ek belge
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:RELIGION} beyan edildi.][?special: (Ayrica|Ek belge
     olarak) {entity:BIOMETRIC_REF} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine
     iletildi.|Kayit tamamlandi.|Talep siraya alindi.)'
 - id: eval_ethnicity_sexual_life
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:ETHNICITY} beyan edildi.][?special: (Ayrica|Ek belge
-    olarak) {entity:SEXUAL_LIFE} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:ETHNICITY} beyan edildi.][?special: (Ayrica|Ek belge
+    olarak) {entity:SEXUAL_LIFE} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_criminal_health
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:CRIMINAL} beyan edildi.][?special: (Ayrica|Ek belge
-    olarak) {entity:HEALTH} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:CRIMINAL} beyan edildi.][?special: (Ayrica|Ek belge
+    olarak) {entity:HEALTH} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_biometric_ref_union
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:BIOMETRIC_REF} beyan edildi.][?special: (Ayrica|Ek belge
-    olarak) {entity:UNION} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:BIOMETRIC_REF} beyan edildi.][?special: (Ayrica|Ek belge
+    olarak) {entity:UNION} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'
 - id: eval_sexual_life_political
   weight: '1'
-  text: '(Calisan talebi kaydi.|Ik talep kaydi.|Portal uzerinden gelen talep.|Talep formu kaydi.) (Talep
-    sahibi|Basvuran|Calisan) {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], (kimlik|TC kimlik
-    numarasi) {id:TCKN}[?0.7:, (dogum tarihi|dogum) {entity:DOB}]. [?0.55:(Adres|Yazisma adresi) olarak
-    {entity:ADDRESS} bildirildi. ][?0.7:(Iletisim icin|Geri donus icin) {id:PHONE}[?0.6: ve {id:EMAIL}]
-    verildi. ](Odeme|Iade|Avans odemesi) {id:IBAN} (hesabina yapilacak|hesabina yonlendirildi).[?0.35:
-    (Kurumsal kart|Sirket karti) {id:PAN} ile yapilan harcama eklendi.][?0.5: (Ilgili kurum|Talebe konu
-    kurum) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}].][?special: (Talebe
-    gerekce olarak|Gerekce bolumunde) {entity:SEXUAL_LIFE} beyan edildi.][?special: (Ayrica|Ek belge
-    olarak) {entity:POLITICAL} kaydi eklendi.] (Talep kayda alindi.|Talep ik birimine iletildi.|Kayit
-    tamamlandi.|Talep siraya alindi.)'
+  text: '(Calisan talebi kaydi.|Ik talep kaydi.) Talep sahibi {entity:PERSON}[?0.5:, {lex:departments_tr} birimi], kimlik {id:TCKN}[?0.7:, dogum tarihi {entity:DOB}]. [?0.55:Adres olarak
+    {entity:ADDRESS} bildirildi. ][?0.7:Iletisim icin {id:PHONE} ve {id:EMAIL} verildi. ]Odeme {id:IBAN} hesabina yapilacak.[?0.35:
+    Kurumsal kart {id:PAN} ile yapilan harcama eklendi.][?0.5: Ilgili kurum {entity:ORG}, vergi numarasi {id:VKN}.][?special: Talebe gerekce olarak {entity:SEXUAL_LIFE} beyan edildi.][?special: (Ayrica|Ek belge
+    olarak) {entity:POLITICAL} kaydi eklendi.] (Talep kayda alindi.|Kayit tamamlandi.)'

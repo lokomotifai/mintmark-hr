@@ -183,6 +183,13 @@ kayıt türleridir; şablon başına iki özel yuva, etiketlere eşit dağıtıl
 Sigorta paketinin ikisi yerine üç belge ailesi olması aritmetiği burada rahat
 kılıyor.
 
+### Bir belgenin bağlı olduğu kayıt hakkında söylemedikleri
+
+Belge gövdesindeki bir kimlik bilgisi taze bir çekimdir. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}` ve `{entity:PERSON}` ile adlandırılan kişi, belgenin bağlı olduğu
+çalışan kaydından bağımsız çekilir. Aralıklar doğru kalır; ancak bu paket belge ve
+kayıt kimliklerinin eşleşmesini gerektiren testleri desteklemez.
+
 ## İki tarif
 
 | Tarif | Biçim | Ne için |

@@ -183,6 +183,14 @@ one, two special slots each, spread evenly across the labels. Three document
 families rather than the insurance pack's two makes the arithmetic comfortable
 here.
 
+### What a document does not tell you about its record
+
+An identifier inside a document body is a fresh draw. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}`, and the person named by `{entity:PERSON}` are drawn independently
+of the employee record the document is attached to. The spans remain correct,
+but this pack does not support tests that require document and record identities
+to agree.
+
 ## The two recipes
 
 | Recipe | Shape | For |
