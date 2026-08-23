@@ -52,11 +52,39 @@ jobs:
       # Pull-request code never receives the private canary. The real scan runs
       # only after protected main accepts the revision; PRs exercise the
       # scanner's fail-closed tripwire without a secret.
-      - name: Scan tree for private-corpus canary
+      - name: Build final reference artifacts before the release gate
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          mkdir -p dist
+          for spec in workforce-baseline:20261101 pii-eval:20261102; do
+            recipe="${spec%%:*}"
+            seed="${spec##*:}"
+            output="dist/$recipe"
+            artifact="dist/$pack-$version-$recipe.tar.gz"
+            uv run mintmark mint --pack . --recipe "$recipe" --seed "$seed" --out "$output"
+            tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 \
+              --numeric-owner -czf "$artifact" -C dist "$recipe"
+            test -s "$artifact"
+          done
+
+      - name: Scan source tree and final release artifacts
         if: github.event_name == 'push'
         env:
           MINTMARK_CANARY: ${{ secrets.MINTMARK_CANARY }}
-        run: uv run python tools/canary.py .
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          artifacts=(
+            "dist/$pack-$version-workforce-baseline.tar.gz"
+            "dist/$pack-$version-pii-eval.tar.gz"
+          )
+          for artifact in "${artifacts[@]}"; do test -s "$artifact"; done
+          uv run python tools/canary.py . "${artifacts[@]}"
+          sha256sum "${artifacts[@]}" > dist/SHA256SUMS
 
       - name: Prove the tripwire still fails closed
         if: github.event_name == 'pull_request'

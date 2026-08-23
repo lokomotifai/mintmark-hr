@@ -59,3 +59,10 @@ def test_stream_search_matches_across_chunk_boundaries(monkeypatch: pytest.Monke
     )
     assert found
     assert data is None
+
+
+def test_ci_scans_built_release_archives_explicitly() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "Build final reference artifacts before the release gate" in workflow
+    assert 'for artifact in "${artifacts[@]}"; do test -s "$artifact"; done' in workflow
+    assert 'tools/canary.py . "${artifacts[@]}"' in workflow
