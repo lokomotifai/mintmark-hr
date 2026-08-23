@@ -17,7 +17,7 @@ abstract: 'Declaration-and-data pack producing synthetic Turkish employment reco
   stays procedural, recording that a document was requested rather than what it contained.
   Requires the Mintmark engine.'
 type: dataset
-version: 0.1.1
+version: 0.2.0
 authors:
 - family-names: Guner
   given-names: Fatih

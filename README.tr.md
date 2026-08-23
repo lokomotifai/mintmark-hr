@@ -15,12 +15,12 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Motor kodu yok" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i karşılandı" src="https://img.shields.io/badge/kapsam%20hedefleri-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Sürüm v0.1.1" src="https://img.shields.io/badge/sürüm-v0.1.1-3C873A?style=flat-square"></a>
+  <img alt="Geliştirme sürümü 0.2.0" src="https://img.shields.io/badge/geliştirme-v0.2.0-C98A2B?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeği gerekir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.1%2C%3C0.2-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeği gerekir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Yedi kayıt türü" src="https://img.shields.io/badge/kayıt%20türü-7-17191F?style=flat-square">
   <img alt="Üç belge ailesi" src="https://img.shields.io/badge/belge%20ailesi-3-17191F?style=flat-square">
   <img alt="26 kurgusal işveren adı" src="https://img.shields.io/badge/kurgusal%20işveren-26-D11F26?style=flat-square">
@@ -49,9 +49,9 @@ ortamına taşınamaz. Bordro banka bilgisi taşır. İzin kayıtları hastalık
 taşır. İşe alım adli sicil kontrolü taşır. Bu paket o veriyi bildirir, motor da
 üretir: belirlenimci, aralık etiketli ve bir künye ile mühürlü.
 
-**Sürüm 0.1.1. İki referans veri kümesi
-[v0.1.1 sürümüne](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) ekli olarak
-yayımlandı; her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olanlar: `packcheck` sabitlenmiş
+**Geliştirme sürümü 0.2.0. En son yayımlanan referans veri kümeleri
+[v0.1.1 sürümünde](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) kalır;
+bu depo değişikliği 0.2.0 veri kümesi yayımlamaz.** Bugün doğru olanlar: `packcheck` sabitlenmiş
 çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz
 kapsam hedefinin hepsini karşılıyor.
 
@@ -152,10 +152,10 @@ mintmark verify ./run
 Üretildiği hâliyle bir işe alım notu:
 
 ```
-Aday degerlendirme notu. Aday Mehmet Demir, basvurdugu pozisyon
+Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon
 icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
-575 131 44 23, eposta kullanici4843.7421@example.net. Onceki
-isvereni Anka Lojistik. Teknik yetkinlik beklentiyi karsiliyor
+592 723 56 80, eposta kullanici7917.9145@example.org. Onceki
+isvereni Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor
 olarak notlandi. Surec sonraki asamaya gecti.
 ```
 
@@ -263,8 +263,8 @@ Hepsi paketlenmiş çekirdek wheel'e karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.1.1, yayımlandı. İki referans veri kümesi
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümüne ekli;
+Sürüm 0.2.0 geliştirme aşamasındadır. En son yayımlanan iki referans veri kümesi
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1) sürümünde kalır;
 [docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
 tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
 [`mintmark`](https://pypi.org/project/mintmark/) olarak yayımlanmıştır.

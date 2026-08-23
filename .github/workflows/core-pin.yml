@@ -1,10 +1,4 @@
-# THIS WORKFLOW REQUIRES NETWORK ACCESS and is deliberately separated from the
-# required checks for that reason.
-#
-# The vendored wheel is what required CI actually runs against, so something has
-# to confirm it still matches the core repository at the pinned tag. That
-# comparison is the only thing standing between an offline check and a check that
-# passes against an artifact nobody recognizes.
+# Network-separated provenance check for the executable core vendored by this pack.
 name: core pin (network)
 
 on:
@@ -14,30 +8,38 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   pin:
-    name: vendored core matches the pinned tag
+    name: vendored core matches immutable source
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          enable-cache: true
-      - name: Recorded pin
+          persist-credentials: false
+
+      - name: Verify repository-local wheel integrity
+        run: cd vendor && sha256sum --check CHECKSUMS
+
+      - name: Check out the independently governed core revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: lokomotifai/mintmark
+          ref: daf9f1468e86dc078d9d0513fa53a219cd7412d0
+          path: .core-source
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          enable-cache: false
+          version: "0.12.3"
+
+      - name: Rebuild the pinned source and compare exact wheel bytes
         run: |
-          echo "requires_core range, from pack.yaml:"
-          grep requires_core pack.yaml
-          echo
-          echo "vendored artifact:"
-          cat vendor/CHECKSUMS
-          echo
-          echo "Compare against the core repository at the tag recorded in"
-          echo "docs/engineering-notes.md. On a mismatch, open an issue rather than"
-          echo "replacing the wheel: a changed core changes emitted bytes."
-      - name: Cadence findings land as issues
-        if: always()
-        run: |
-          echo "Cadence run complete. A run that finds nothing still records that"
-          echo "it ran: silence is not evidence."
+          set -euo pipefail
+          uv build --directory .core-source --out-dir "$RUNNER_TEMP/core-dist"
+          expected="$(awk '{print $1}' vendor/CHECKSUMS)"
+          filename="$(awk '{print $2}' vendor/CHECKSUMS)"
+          actual="$(sha256sum "$RUNNER_TEMP/core-dist/$filename" | awk '{print $1}')"
+          test "$actual" = "$expected"
+          echo "Pinned core source reproduced $filename at $actual." >> "$GITHUB_STEP_SUMMARY"

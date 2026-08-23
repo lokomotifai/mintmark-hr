@@ -71,8 +71,8 @@ def test_the_pack_name_matches_the_repository() -> None:
 
 def test_the_core_pin_has_a_closed_upper_bound() -> None:
     """An open pin means a core minor release can silently change our output."""
-    assert PACK.requires_core.contains("0.1.0")
-    assert not PACK.requires_core.contains("0.2.0")
+    assert PACK.requires_core.contains("0.3.0")
+    assert not PACK.requires_core.contains("0.4.0")
 
 
 def test_the_locale_is_turkish() -> None:
@@ -83,6 +83,7 @@ def test_the_locale_is_turkish() -> None:
 
 STRUCTURED = ("employee", "position_history", "leave_record", "payroll_entry")
 DOCUMENTS = ("performance_note", "recruiter_note", "hr_request")
+EVALUATION_DOCUMENTS = tuple(f"{name}_eval" for name in DOCUMENTS)
 
 
 def test_the_four_structured_record_types_exist() -> None:
@@ -150,7 +151,7 @@ def test_birth_dates_declare_a_working_age_window() -> None:
     assert span == [18, 65], span
 
 
-def _field(type_name: str, field_name: str):  # noqa: ANN202 - the core's Field type
+def _field(type_name: str, field_name: str):
     record_type = next(t for t in PACK.record_types if t.type_name == type_name)
     return next(f for f in record_type.fields if f.name == field_name)
 
@@ -159,7 +160,7 @@ def _field(type_name: str, field_name: str):  # noqa: ANN202 - the core's Field 
 
 
 def test_at_least_twenty_four_fictional_employer_names() -> None:
-    employers = PACK.lexicons["employers_fictional"]["values"]
+    employers = PACK.lexicons["employers_fictional"]
     assert len(employers) >= 24, f"the brief settles at least 24, found {len(employers)}"
 
 
@@ -207,8 +208,8 @@ def test_no_template_names_a_real_company() -> None:
 # Recipes.
 
 
-def test_the_three_named_recipes_exist() -> None:
-    assert set(PACK.recipes) == {"workforce-baseline", "pii-eval", "anomaly-mix"}
+def test_the_named_recipes_exist() -> None:
+    assert set(PACK.recipes) == {"workforce-baseline", "pii-eval"}
 
 
 def test_every_recipe_ships_with_the_safe_policy() -> None:
@@ -219,7 +220,6 @@ def test_every_recipe_ships_with_the_safe_policy() -> None:
 def test_the_baseline_special_rate_is_the_governed_one() -> None:
     """The rate the sign-off gate covers. Changing it reopens that gate."""
     assert PACK.recipe("workforce-baseline").special_rate == "0.06"
-    assert PACK.recipe("anomaly-mix").special_rate == "0.06"
 
 
 def test_the_evaluation_recipe_declares_a_target_for_every_label() -> None:
@@ -265,6 +265,20 @@ def minted(tmp_path_factory: pytest.TempPathFactory) -> Path:
         out=out,
         records=MINT_COUNTS,
         invocation="pytest",
+    )
+    return out
+
+
+@pytest.fixture(scope="module")
+def evaluation_minted(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """Render the complete evaluation recipe so safety checks see every family."""
+    out = tmp_path_factory.mktemp("evaluation-pack") / "run"
+    mint(
+        pack=ROOT,
+        recipe="pii-eval",
+        seed=20261102,
+        out=out,
+        invocation="pytest safety gate",
     )
     return out
 
@@ -416,7 +430,7 @@ def _terms(path: Path) -> list[str]:
     ]
 
 
-def _as_denylist(path: Path, note: str):  # noqa: ANN202 - the core's Denylist type
+def _as_denylist(path: Path, note: str):
     return parse_denylist("\n".join(f"{term}    # {note}" for term in _terms(path)))
 
 
@@ -439,12 +453,36 @@ def test_no_rendered_document_contains_denied_clinical_vocabulary(minted: Path) 
     assert not offenders, "\n".join(offenders[:10])
 
 
-def test_every_health_span_draws_from_the_core_condition_classes(minted: Path) -> None:
+def test_all_evaluation_documents_respect_sensitive_language_boundaries(
+    evaluation_minted: Path,
+) -> None:
+    for denylist_path, note in (
+        (CLINICAL_DENIED, "clinical"),
+        (ACCUSATORY_DENIED, "accusatory"),
+    ):
+        denied = _as_denylist(denylist_path, f"denied {note} vocabulary")
+        offenders = [
+            f"{name}: {hit.entry!r}"
+            for name in EVALUATION_DOCUMENTS
+            for line in (evaluation_minted / f"{name}.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+            for hit in denied.scan(json.loads(line)["body"])
+        ]
+        assert not offenders, "\n".join(offenders[:10])
+
+
+def test_every_health_span_draws_from_the_core_condition_classes(
+    evaluation_minted: Path,
+) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(minted, "HEALTH", set(core_descriptors(Label.HEALTH)))
+    _assert_spans_are_curated(
+        evaluation_minted, "HEALTH", set(core_descriptors(Label.HEALTH))
+    )
 
 
 # The accusatory boundary, which only this pack owns.
@@ -475,21 +513,36 @@ def test_no_rendered_document_accuses_anyone(minted: Path) -> None:
 
 
 def test_no_template_source_crosses_either_boundary() -> None:
-    """Catch it in the template rather than waiting for a draw to surface it."""
-    text = "\n".join(
-        p.read_text(encoding="utf-8") for p in sorted((ROOT / "templates").rglob("*.yaml"))
-    )
+    """Scan decoded template values, including YAML escape sequences."""
+    texts = [
+        entry["text"]
+        for path in sorted((ROOT / "templates").rglob("*.yaml"))
+        for entry in yaml.safe_load(path.read_text(encoding="utf-8"))["entries"]
+    ]
     for path, note in ((CLINICAL_DENIED, "clinical"), (ACCUSATORY_DENIED, "accusatory")):
-        hits = [hit.entry for hit in _as_denylist(path, note).scan(text)]
+        hits = [
+            hit.entry
+            for text in texts
+            for hit in _as_denylist(path, note).scan(text)
+        ]
         assert not hits, f"a template carries denied {note} vocabulary: {hits}"
 
 
-def test_every_criminal_span_draws_from_the_core_document_names(minted: Path) -> None:
+@pytest.mark.parametrize("obfuscated", ["te\u200bşhis", "tes\u0327his"])
+def test_unicode_obfuscation_cannot_bypass_clinical_controls(obfuscated: str) -> None:
+    assert _as_denylist(CLINICAL_DENIED, "clinical").scan(obfuscated)
+
+
+def test_every_criminal_span_draws_from_the_core_document_names(
+    evaluation_minted: Path,
+) -> None:
     """The CRIMINAL surface names a document, never an allegation."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL)))
+    _assert_spans_are_curated(
+        evaluation_minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL))
+    )
 
 
 @pytest.mark.parametrize(
@@ -501,7 +554,9 @@ def test_every_criminal_span_draws_from_the_core_document_names(minted: Path) ->
 )
 def test_each_denied_list_would_catch_a_planted_term(path: Path, planted: str) -> None:
     """A control that has never rejected anything is not known to reject anything."""
-    assert _as_denylist(path, "denied").scan(planted), f"{path.name} no longer catches an obvious term"
+    assert _as_denylist(path, "denied").scan(planted), (
+        f"{path.name} no longer catches an obvious term"
+    )
 
 
 def _assert_spans_are_curated(minted: Path, label: str, allowed: set[str]) -> None:
@@ -550,7 +605,7 @@ def test_the_readme_example_is_real_output_not_an_illustration() -> None:
 
 
 def test_the_readme_states_the_counts_it_claims() -> None:
-    employers = len(PACK.lexicons["employers_fictional"]["values"])
+    employers = len(PACK.lexicons["employers_fictional"])
     denied = len(_terms(ACCUSATORY_DENIED))
     for path in (README_EN, README_TR):
         text = path.read_text(encoding="utf-8")
@@ -608,14 +663,11 @@ def test_each_readme_names_the_release_that_actually_exists(path: Path) -> None:
     older one whose datasets no longer reproduce from these declarations.
     """
     text = path.read_text(encoding="utf-8")
-    tag = f"v{PACK.version}"
-    assert f"/releases/tag/{tag}" in text, (
-        f"{path.name} does not point at {tag}, the version this pack declares"
-    )
-    stale = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
-    assert set(stale) == {PACK.version}, (
-        f"{path.name} names releases {sorted(set(stale))} while the pack is {PACK.version}"
-    )
+    assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
+    assert "under development" in text or "geliştirme aşamasındadır" in text
+    linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
+    assert linked, f"{path.name} no longer links the latest published release"
+    assert PACK.version not in linked, "an unreleased version must not be presented as published"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])

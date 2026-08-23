@@ -15,12 +15,12 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1"><img alt="Release v0.1.1" src="https://img.shields.io/badge/release-v0.1.1-3C873A?style=flat-square"></a>
+  <img alt="Development version 0.2.0" src="https://img.shields.io/badge/development-v0.2.0-C98A2B?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.1%2C%3C0.2-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Seven record types" src="https://img.shields.io/badge/record%20types-7-17191F?style=flat-square">
   <img alt="Three document families" src="https://img.shields.io/badge/document%20families-3-17191F?style=flat-square">
   <img alt="26 fictional employer names" src="https://img.shields.io/badge/fictional%20employers-26-D11F26?style=flat-square">
@@ -50,9 +50,9 @@ test environment. Payroll carries bank details. Leave records carry sick days.
 Recruiting carries criminal record checks. This pack declares that data, and the
 engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.1.1. Two reference datasets are published as assets on
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), each
-carrying its own manifest and checksums.** What is true today: `packcheck` passes against
+**Development version 0.2.0. The latest published reference datasets remain on
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1); no 0.2.0
+dataset is published by this repository change.** What is true today: `packcheck` passes against
 the pinned core, the test suite passes, and the evaluation recipe meets every one
 of its eighteen coverage targets.
 
@@ -154,10 +154,10 @@ mintmark verify ./run
 One recruiter note, as emitted:
 
 ```
-Aday degerlendirme notu. Aday Mehmet Demir, basvurdugu pozisyon
+Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon
 icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
-575 131 44 23, eposta kullanici4843.7421@example.net. Onceki
-isvereni Anka Lojistik. Teknik yetkinlik beklentiyi karsiliyor
+592 723 56 80, eposta kullanici7917.9145@example.org. Onceki
+isvereni Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor
 olarak notlandi. Surec sonraki asamaya gecti.
 ```
 
@@ -260,8 +260,8 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.1.1, released. Two reference datasets are attached to
-[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1), minted with the
+Version 0.2.0 is under development. The latest published reference datasets remain attached to
+[v0.1.1](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.1.1); they were minted with the
 safe identifier policy at the seeds declared in
 [docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
 [`mintmark`](https://pypi.org/project/mintmark/).

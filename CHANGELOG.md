@@ -15,6 +15,19 @@ from, so raising the version is itself such a change. Version and content
 correspond exactly, which is the point. The pack digest is a separate record of
 which declarations produced a dataset and seeds nothing.
 
+## 0.2.0 - Unreleased
+
+### Security
+
+- Require the audited Mintmark 0.3 core, allow only the safe identifier policy,
+  and bind the vendored wheel to an immutable source commit and checksum.
+- Remove ignored recipe controls, classify address and employer entity lexicons,
+  and make every declared lexicon reachable from generation.
+- Pin CI actions, keep secrets away from pull-request code, and make the canary
+  scanner fail closed on links, nested archives, gzip, and resource exhaustion.
+- Scan decoded templates and every rendered reference document family against
+  clinical and accusatory language controls, including Unicode obfuscations.
+
 ## 0.1.1 - 2026-08-22
 
 ### Added

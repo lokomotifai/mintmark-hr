@@ -3,6 +3,16 @@
 Decisions a reader of the declarations would otherwise have to reverse engineer,
 and the reasoning that would be lost if only the outcome were recorded.
 
+## The core wheel is bound to an immutable source revision
+
+`pack.yaml` requires Mintmark `>=0.3,<0.4`, while required CI installs the
+vendored `mintmark-0.3.0-py3-none-any.whl` whose SHA-256 is recorded in
+`vendor/CHECKSUMS`. The separated network workflow checks out core commit
+`daf9f1468e86dc078d9d0513fa53a219cd7412d0`, builds it with its locked backend,
+and byte-compares that independently sourced wheel with the vendored artifact.
+Repository-local checksums establish integrity; the immutable core checkout and
+reproducible comparison establish provenance.
+
 ## Why a leave type carries no label
 
 `leave_record.type` is a structured enum: `yillik`, `mazeret`, `ucretsiz`,

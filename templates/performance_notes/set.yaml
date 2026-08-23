@@ -2,7 +2,7 @@ entries:
 - id: perf_cycle
   weight: '0.55'
   text: 'Performans donemi degerlendirme notu. Calisan {entity:PERSON}, sicil {field:performance_note.employee_id},
-    kayit {field:performance_note.author_role} tarafindan girildi. Donem hedeflerinin (tamami|buyuk bolumu|bir
+    kayit {field:performance_note.author_role} tarafindan {lex:departments_tr} birimi icin girildi. Donem hedeflerinin (tamami|buyuk bolumu|bir
     kismi) karsilandi. (Ekip ici isbirligi|Teslim disiplini|Musteri geri bildirimi) olumlu degerlendirildi.
     Gelisim alani olarak (raporlama|onceliklendirme|paydas iletisimi) belirlendi. [?0.4: Bir sonraki donem
     icin {entity:ORG} ile ortak yurutulen calismada gorev verilmesi kararlastirildi.] Not dosyaya islendi.'
