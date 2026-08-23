@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.3.1%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Seven record types" src="https://img.shields.io/badge/record%20types-7-17191F?style=flat-square">
   <img alt="Three document families" src="https://img.shields.io/badge/document%20families-3-17191F?style=flat-square">
   <img alt="26 fictional employer names" src="https://img.shields.io/badge/fictional%20employers-26-D11F26?style=flat-square">

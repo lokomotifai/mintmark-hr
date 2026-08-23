@@ -58,14 +58,14 @@ wheels = [
 
 [[package]]
 name = "mintmark"
-version = "0.3.0"
-source = { path = "vendor/mintmark-0.3.0-py3-none-any.whl" }
+version = "0.3.1"
+source = { path = "vendor/mintmark-0.3.1-py3-none-any.whl" }
 dependencies = [
     { name = "jsonschema" },
     { name = "pyyaml" },
 ]
 wheels = [
-    { filename = "mintmark-0.3.0-py3-none-any.whl", hash = "sha256:f4346216b85f2110ad4171da1bddc1ef57f905717bf3ffffccb68bdcd1f9f158" },
+    { filename = "mintmark-0.3.1-py3-none-any.whl", hash = "sha256:227b1dd727ddf971bed404a8d2248e58a8cc06bba72085c596d93aee259166b5" },
 ]
 
 [package.metadata]
@@ -91,7 +91,7 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "mintmark", path = "vendor/mintmark-0.3.0-py3-none-any.whl" },
+    { name = "mintmark", path = "vendor/mintmark-0.3.1-py3-none-any.whl" },
     { name = "pytest", specifier = ">=8.3,<10" },
     { name = "pyyaml", specifier = ">=6.0,<7" },
     { name = "ruff", specifier = ">=0.14,<0.17" },

@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeği gerekir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeği gerekir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.3.1%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Yedi kayıt türü" src="https://img.shields.io/badge/kayıt%20türü-7-17191F?style=flat-square">
   <img alt="Üç belge ailesi" src="https://img.shields.io/badge/belge%20ailesi-3-17191F?style=flat-square">
   <img alt="26 kurgusal işveren adı" src="https://img.shields.io/badge/kurgusal%20işveren-26-D11F26?style=flat-square">
