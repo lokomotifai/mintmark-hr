@@ -19,7 +19,8 @@ which declarations produced a dataset and seeds nothing.
 
 ### Security
 
-- Require the audited Mintmark 0.3 core, allow only the safe identifier policy,
+- Require the audited Mintmark 0.3.1 core, whose manifest budget verifies the
+  pack's 72,000 payroll rows; allow only the safe identifier policy,
   and bind the vendored wheel to an immutable source commit and checksum.
 - Remove ignored recipe controls, classify address and employer entity lexicons,
   and make every declared lexicon reachable from generation.

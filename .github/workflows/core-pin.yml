@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: lokomotifai/mintmark
-          ref: 499216efdc8d30ccb21d4a4a03a38b014b0ca870
+          ref: 8017e894210c1f3649e66b0ac0fe8e0af18d0a3b
           path: .core-source
           persist-credentials: false
 

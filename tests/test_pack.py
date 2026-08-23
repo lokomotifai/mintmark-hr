@@ -72,7 +72,8 @@ def test_the_pack_name_matches_the_repository() -> None:
 
 def test_the_core_pin_has_a_closed_upper_bound() -> None:
     """An open pin means a core minor release can silently change our output."""
-    assert PACK.requires_core.contains("0.3.0")
+    assert not PACK.requires_core.contains("0.3.0")
+    assert PACK.requires_core.contains("0.3.1")
     assert not PACK.requires_core.contains("0.4.0")
 
 

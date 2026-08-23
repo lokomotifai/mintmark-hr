@@ -1,7 +1,7 @@
 schema_version: 1
 name: mintmark-hr
 version: 0.2.0
-requires_core: ">=0.3,<0.4"
+requires_core: ">=0.3.1,<0.4"
 locale: tr-TR
 allowed_identifier_policies: [safe]
 description: Synthetic Turkish HR and payroll records with span-labeled employment documents.

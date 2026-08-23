@@ -5,10 +5,10 @@ and the reasoning that would be lost if only the outcome were recorded.
 
 ## The core wheel is bound to an immutable source revision
 
-`pack.yaml` requires Mintmark `>=0.3,<0.4`, while required CI installs the
-vendored `mintmark-0.3.0-py3-none-any.whl` whose SHA-256 is recorded in
+`pack.yaml` requires Mintmark `>=0.3.1,<0.4`, while required CI installs the
+vendored `mintmark-0.3.1-py3-none-any.whl` whose SHA-256 is recorded in
 `vendor/CHECKSUMS`. The separated network workflow checks out core commit
-`499216efdc8d30ccb21d4a4a03a38b014b0ca870`, builds it with its locked backend,
+`8017e894210c1f3649e66b0ac0fe8e0af18d0a3b`, builds it with its locked backend,
 and byte-compares that independently sourced wheel with the vendored artifact.
 Repository-local checksums establish integrity; the immutable core checkout and
 reproducible comparison establish provenance.
