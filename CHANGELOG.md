@@ -23,6 +23,8 @@ which declarations produced a dataset and seeds nothing.
   and bind the vendored wheel to an immutable source commit and checksum.
 - Remove ignored recipe controls, classify address and employer entity lexicons,
   and make every declared lexicon reachable from generation.
+- Remove the byte-identical `anomaly-mix` recipe, whose name falsely implied it
+  could alter anomaly rates fixed by the payroll declaration.
 - Pin CI actions, keep secrets away from pull-request code, and make the canary
   scanner fail closed on links, nested archives, gzip, and resource exhaustion.
 - Scan decoded templates and every rendered reference document family against

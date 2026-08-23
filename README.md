@@ -183,15 +183,14 @@ one, two special slots each, spread evenly across the labels. Three document
 families rather than the insurance pack's two makes the arithmetic comfortable
 here.
 
-## The three recipes
+## The two recipes
 
 | Recipe | Shape | For |
 | --- | --- | --- |
 | **workforce-baseline** | 6 000 employees, 11 000 position rows, 24 000 leave records, 72 000 payroll entries, and 11 000 documents | Filling a test environment with something that behaves like a workforce |
 | **pii-eval** | 3 000 documents, every label above its target | Measuring a detector on Turkish HR text |
-| **anomaly-mix** | The baseline plus a labeled anomaly field on every payroll entry | Scoring a monitoring system against ground truth |
 
-### A limitation of anomaly-mix, stated plainly
+### A limitation of the anomaly labels, stated plainly
 
 Every payroll entry carries `anomaly_kind` and `is_anomaly`, and the two never
 disagree. But the kinds are **per-row labels drawn at declared rates, not genuine
@@ -200,7 +199,7 @@ breaks a pattern across an employee's other months; here it is a label on one ro
 
 That is a limit of the pack contract rather than an oversight: each field is drawn
 from an independent stream, so a pack cannot declare a pattern that correlates
-rows. Use this recipe to check that your pipeline carries labels through
+rows. Use the baseline recipe to check that your pipeline carries labels through
 correctly. Do not use it to measure whether a detector finds real patterns.
 
 ## A denylist that fired on our own people
@@ -236,7 +235,7 @@ is in [docs/normative-verification.md](docs/normative-verification.md).
 ```
 pack.yaml           identity, the core pin, the allowed identifier policies
 fields/             one file per record type, in generation order
-recipes/            workforce-baseline, pii-eval, anomaly-mix
+recipes/            workforce-baseline and pii-eval
 templates/          baseline sets, and the separate evaluation sets
 lexicons/           invented employers, titles and departments, the denylist,
                     and the clinical and accusatory vocabularies this pack refuses

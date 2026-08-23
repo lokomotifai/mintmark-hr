@@ -183,15 +183,14 @@ kayıt türleridir; şablon başına iki özel yuva, etiketlere eşit dağıtıl
 Sigorta paketinin ikisi yerine üç belge ailesi olması aritmetiği burada rahat
 kılıyor.
 
-## Üç tarif
+## İki tarif
 
 | Tarif | Biçim | Ne için |
 | --- | --- | --- |
 | **workforce-baseline** | 6 000 çalışan, 11 000 görev satırı, 24 000 izin kaydı, 72 000 bordro kaydı ve 11 000 belge | Bir test ortamını iş gücü gibi davranan bir şeyle doldurmak |
 | **pii-eval** | 3 000 belge, her etiket hedefinin üzerinde | Türkçe İK metninde bir dedektörü ölçmek |
-| **anomaly-mix** | Temel tarif artı her bordro kaydında etiketli bir anomali alanı | Bir izleme sistemini gerçek referansa karşı puanlamak |
 
-### anomaly-mix'in açıkça belirtilen bir sınırı
+### Anomali etiketlerinin açıkça belirtilen bir sınırı
 
 Her bordro kaydı `anomaly_kind` ve `is_anomaly` taşır ve ikisi asla çelişmez. Ama
 türler **bildirilmiş oranlarda çekilen satır başı etiketlerdir; gerçek zamansal
@@ -200,7 +199,7 @@ diğer aylarındaki örüntüyü bozan bir aydır; burada tek satırdaki bir eti
 
 Bu, gözden kaçmış bir nokta değil paket sözleşmesinin sınırıdır: her alan bağımsız
 bir akıştan çekilir, dolayısıyla bir paket satırları ilişkilendiren bir örüntü
-bildiremez. Bu tarifi hattınızın etiketleri doğru taşıyıp taşımadığını kontrol
+bildiremez. Taban tarifini hattınızın etiketleri doğru taşıyıp taşımadığını kontrol
 etmek için kullanın. Bir dedektörün gerçek örüntüleri bulup bulmadığını ölçmek
 için kullanmayın.
 
@@ -239,7 +238,7 @@ aittir. Kaydın tamamı
 ```
 pack.yaml           kimlik, çekirdek sabitlemesi, izin verilen kimlik politikaları
 fields/             üretim sırasına göre kayıt türü başına bir dosya
-recipes/            workforce-baseline, pii-eval, anomaly-mix
+recipes/            workforce-baseline ve pii-eval
 templates/          temel kümeler ve ayrı değerlendirme kümeleri
 lexicons/           kurgusal işverenler, unvanlar ve birimler, denylist ve bu
                     paketin reddettiği klinik ve itham söz dağarları
