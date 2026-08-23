@@ -1,15 +1,11 @@
 schema_version: 1
 name: mintmark-hr
 version: 0.2.0
-requires_core: ">=0.2,<0.3"
+requires_core: ">=0.3,<0.4"
 locale: tr-TR
 allowed_identifier_policies: [safe]
 description: Synthetic Turkish HR and payroll records with span-labeled employment documents.
 description_tr: Sentetik Turkce insan kaynaklari ve bordro kayitlari ile etiketli belgeler.
-# Surfaces this pack adds to an entity label, appended after the core's
-# curated list. Without this every pack in the family drew its organizations
-# from the same twelve core names, which is a vocabulary an evaluation set
-# can be passed by memorizing.
 entity_lexicons:
   ADDRESS: [mahalleler_tr, sokaklar_tr]
   ORG: [employers_fictional]

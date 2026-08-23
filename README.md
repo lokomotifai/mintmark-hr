@@ -15,12 +15,12 @@
   <a href="https://github.com/lokomotifai/mintmark-hr/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-hr/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.1%2C%3C0.2-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Seven record types" src="https://img.shields.io/badge/record%20types-7-17191F?style=flat-square">
   <img alt="Three document families" src="https://img.shields.io/badge/document%20families-3-17191F?style=flat-square">
   <img alt="26 fictional employer names" src="https://img.shields.io/badge/fictional%20employers-26-D11F26?style=flat-square">
@@ -50,12 +50,11 @@ test environment. Payroll carries bank details. Leave records carry sick days.
 Recruiting carries criminal record checks. This pack declares that data, and the
 engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.2.0, prepared and not tagged yet. Its reference datasets are minted
-from these declarations and attached to
-v0.2.0 when the tag
-is cut, each carrying its own manifest and checksums.** What is true today: `packcheck` passes against
-the pinned core, the test suite passes, and the evaluation recipe meets every one
-of its eighteen coverage targets.
+**Release 0.2.0. Its reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0), each
+carrying its own manifest and checksums.** `packcheck` passes against the pinned
+core, the test suite passes, and the evaluation recipe meets every one of its
+eighteen coverage targets.
 
 > [!IMPORTANT]
 > **What this pack is not.** It is not anonymization of your HR system; it ingests
@@ -155,11 +154,11 @@ mintmark verify ./run
 One recruiter note, as emitted:
 
 ```
-Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon icin
-teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90 592
-723 56 80, eposta kullanici7917.9145@example.org. Onceki isvereni
-Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor olarak
-notlandi. Surec sonraki asamaya gecti.
+Aday degerlendirme notu. Aday Ebru Özcan, basvurdugu pozisyon
+icin teknik_degerlendirme asamasinda degerlendirildi. Iletisim +90
+592 723 56 80, eposta kullanici7917.9145@example.org. Onceki
+isvereni Deniz Kum Insaat. Teknik yetkinlik beklentiyi karsiliyor
+olarak notlandi. Surec sonraki asamaya gecti.
 ```
 
 That is the first record in [`samples/recruiter_note.jsonl`](samples/recruiter_note.jsonl),
@@ -187,17 +186,10 @@ here.
 ### What a document does not tell you about its record
 
 An identifier inside a document body is a fresh draw. `{id:TCKN}`, `{id:IBAN}`,
-`{id:PHONE}` and the person `{entity:PERSON}` names are drawn independently of the
-record the document is attached to, so a document linked to `EMP-00000123` names
-somebody else and cites a national identity number no employee row carries. The
-spans are still right: each one points at the surface it labels, and a detector
-scored on them is scored correctly.
-
-What this rules out is anything that needs the two sides to agree. Checking that a
-redaction pipeline gives one person the same pseudonym in a table and in prose, or
-that a control catches a document citing an identifier its master record does not
-hold, cannot be done with this data. It is stated here for the same reason the
-other structural losses are: it is invisible until somebody joins on it.
+`{id:PHONE}`, and the person named by `{entity:PERSON}` are drawn independently
+of the employee record the document is attached to. The spans remain correct,
+but this pack does not support tests that require document and record identities
+to agree.
 
 ## The two recipes
 
@@ -206,7 +198,7 @@ other structural losses are: it is invisible until somebody joins on it.
 | **workforce-baseline** | 6 000 employees, 11 000 position rows, 24 000 leave records, 72 000 payroll entries, and 11 000 documents | Filling a test environment with something that behaves like a workforce |
 | **pii-eval** | 3 000 documents, every label above its target | Measuring a detector on Turkish HR text |
 
-### A limitation of the anomaly fields, stated plainly
+### A limitation of the anomaly labels, stated plainly
 
 Every payroll entry carries `anomaly_kind` and `is_anomaly`, and the two never
 disagree. But the kinds are **per-row labels drawn at declared rates, not genuine
@@ -215,7 +207,7 @@ breaks a pattern across an employee's other months; here it is a label on one ro
 
 That is a limit of the pack contract rather than an oversight: each field is drawn
 from an independent stream, so a pack cannot declare a pattern that correlates
-rows. Use these fields to check that your pipeline carries labels through
+rows. Use the baseline recipe to check that your pipeline carries labels through
 correctly. Do not use it to measure whether a detector finds real patterns.
 
 ## A denylist that fired on our own people
@@ -251,7 +243,7 @@ is in [docs/normative-verification.md](docs/normative-verification.md).
 ```
 pack.yaml           identity, the core pin, the allowed identifier policies
 fields/             one file per record type, in generation order
-recipes/            workforce-baseline, pii-eval
+recipes/            workforce-baseline and pii-eval
 templates/          baseline sets, and the separate evaluation sets
 lexicons/           invented employers, titles and departments, the denylist,
                     and the clinical and accusatory vocabularies this pack refuses
@@ -275,22 +267,15 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.2.0, not tagged yet. This version moves emitted bytes for a fixed seed,
-which this project family calls a major version event: the core began honouring
-template weights, and both the core and this pack widened the surface vocabularies
-a document draws from. The reference datasets attached to v0.1.1 stay valid and
-stay reproducible, with the core and pack versions their own manifests record. New
-ones are minted from these declarations at the seeds in
-[docs/reference-datasets.json](docs/reference-datasets.json) when the tag is cut.
-The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/), and the
-weekly pin check stays red until 0.2.0 is published there, which is accurate: a
-vendored core nobody else can fetch is a core nobody else can check.
+Version 0.2.0 is released. Its two reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-hr/releases/tag/v0.2.0); they
+were minted with the safe identifier policy at the seeds declared in
+[docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
+[`mintmark`](https://pypi.org/project/mintmark/).
 
-This pack carries one governance checkpoint the other packs do not: the baseline
-special rate and the full special-category template subset need a recorded
-sign-off before any public launch surface exists. Publishing the reference
-datasets and confirming the dataset license are the usual external checkpoints on
-top of that.
+Release v0.2.0 records the owner's sign-off for the baseline special rate, the
+full special-category template subset, publication of the reference datasets,
+and the declared dataset license.
 
 ## Community contract
 
@@ -308,7 +293,6 @@ right to the Mintmark name or logo; see [TRADEMARKS.md](TRADEMARKS.md).
 Reference datasets are licensed **CC BY 4.0**: use them for anything, including
 commercially, and credit the source. Every dataset carries its own credit line in
 `MINTMARK.json` and `mintmark verify` prints it, so nothing has to be assembled by
-hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md). Pending legal confirmation;
-nothing here states it as settled.
+hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md).
 
 <p align="center"><sub>Part of the Mintmark family: <a href="https://github.com/lokomotifai/mintmark">the engine</a> · <a href="https://github.com/lokomotifai/mintmark-banking">banking</a> · <a href="https://github.com/lokomotifai/mintmark-insurance">insurance</a></sub></p>

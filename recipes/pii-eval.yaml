@@ -3,8 +3,8 @@ name: pii-eval
 records:
   employee: 900
   position_history: 900
-  leave_record: 900
-  payroll_entry: 900
+  leave_record: 3600
+  payroll_entry: 10800
   performance_note: 0
   recruiter_note: 0
   hr_request: 0

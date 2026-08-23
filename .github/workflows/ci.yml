@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
           enable-cache: true
@@ -39,39 +41,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
         with:
           enable-cache: true
           version: "0.12.3"
       - run: uv sync --locked
 
-      # The scan needs the canary, and GitHub does not give repository secrets to
-      # a workflow triggered by a pull request from a fork. The old arrangement
-      # ran the scan on every pull request anyway, so the required check failed on
-      # every external contribution, and the only shape that would have fixed it,
-      # pull_request_target, hands the secret to code the fork controls. Neither
-      # is acceptable, so the scan runs where the secret exists: on the push to
-      # main, which is the last point before anything is published.
-      - name: Scan tree for private-corpus canary
+      # Pull-request code never receives the private canary. The real scan runs
+      # only after protected main accepts the revision; PRs exercise the
+      # scanner's fail-closed tripwire without a secret.
+      - name: Build final reference artifacts before the release gate
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          mkdir -p dist
+          for spec in workforce-baseline:20261101 pii-eval:20261102; do
+            recipe="${spec%%:*}"
+            seed="${spec##*:}"
+            output="dist/$recipe"
+            artifact="dist/$pack-$version-$recipe.tar.gz"
+            uv run mintmark mint --pack . --recipe "$recipe" --seed "$seed" --out "$output"
+            tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 \
+              --numeric-owner -czf "$artifact" -C dist "$recipe"
+            test -s "$artifact"
+          done
+
+      - name: Scan source tree and final release artifacts
         if: github.event_name == 'push'
         env:
           MINTMARK_CANARY: ${{ secrets.MINTMARK_CANARY }}
-        run: uv run python tools/canary.py .
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          artifacts=(
+            "dist/$pack-$version-workforce-baseline.tar.gz"
+            "dist/$pack-$version-pii-eval.tar.gz"
+          )
+          for artifact in "${artifacts[@]}"; do test -s "$artifact"; done
+          uv run python tools/canary.py . "${artifacts[@]}"
+          sha256sum "${artifacts[@]}" > dist/SHA256SUMS
 
-      # A pull request cannot run the scan, so it proves the tripwire is still
-      # armed instead: the scanner has to refuse a wrong canary and a missing one.
-      # That is the property a change to tools/canary.py could quietly remove, and
-      # it is checkable without the secret.
       - name: Prove the tripwire still fails closed
         if: github.event_name == 'pull_request'
         run: |
           if MINTMARK_CANARY='not-the-canary' uv run python tools/canary.py . ; then
-            echo "tools/canary.py accepted a canary that does not match the committed digest"
+            echo "tools/canary.py accepted a wrong canary"
             exit 1
           fi
           if env -u MINTMARK_CANARY uv run python tools/canary.py . ; then
             echo "tools/canary.py accepted a missing canary"
             exit 1
           fi
-          echo "The tripwire refuses a wrong canary and a missing one." >> "$GITHUB_STEP_SUMMARY"
-          echo "The tree itself is scanned on the push to main that follows the merge." >> "$GITHUB_STEP_SUMMARY"
+          echo "The tripwire fails closed; the tree is scanned on the push to main." >> "$GITHUB_STEP_SUMMARY"

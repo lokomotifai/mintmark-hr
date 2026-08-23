@@ -1,15 +1,4 @@
-# THIS WORKFLOW REQUIRES NETWORK ACCESS and is deliberately separated from the
-# required checks for that reason.
-#
-# The vendored wheel is what required CI actually runs against, so something has
-# to confirm it is the artifact the core project published rather than one that
-# only this repository has ever seen. Its integrity is held by vendor/CHECKSUMS
-# and by uv.lock, and both live in this repository and change in the same commit
-# as the wheel. This is the only check that reaches outside for an answer.
-#
-# It used to print instructions instead of comparing anything, and it declared
-# issues: write while opening no issue. A control that reports without measuring
-# is worse than an absent one, because the green run reads as evidence.
+# Network-separated provenance check for the executable core vendored by this pack.
 name: core pin (network)
 
 on:
@@ -19,66 +8,38 @@ on:
 
 permissions:
   contents: read
-  issues: write
 
 jobs:
   pin:
-    name: vendored core matches what the core project published
+    name: vendored core matches immutable source
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
-      - name: Compare the vendored wheel against the published one
-        id: compare
+      - name: Verify repository-local wheel integrity
+        run: cd vendor && sha256sum --check CHECKSUMS
+
+      - name: Check out the independently governed core revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: lokomotifai/mintmark
+          ref: 499216efdc8d30ccb21d4a4a03a38b014b0ca870
+          path: .core-source
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          enable-cache: false
+          version: "0.12.3"
+
+      - name: Rebuild the pinned source and compare exact wheel bytes
         run: |
           set -euo pipefail
+          uv build --directory .core-source --out-dir "$RUNNER_TEMP/core-dist"
+          expected="$(awk '{print $1}' vendor/CHECKSUMS)"
           filename="$(awk '{print $2}' vendor/CHECKSUMS)"
-          vendored="$(awk '{print $1}' vendor/CHECKSUMS)"
-          version="$(printf '%s' "$filename" | sed -E 's/^mintmark-(.+)-py3-none-any\.whl$/\1/')"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "Vendored $filename"
-          echo "  sha256 $vendored"
-
-          published="$(
-            curl -fsSL "https://pypi.org/pypi/mintmark/$version/json" \
-              | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next((u["digests"]["sha256"] for u in d["urls"] if u["packagetype"]=="bdist_wheel"), ""))'
-          )" || published=""
-
-          if [ -z "$published" ]; then
-            echo "unpublished=true" >> "$GITHUB_OUTPUT"
-            echo "mintmark $version carries no wheel on PyPI, so the vendored artifact"
-            echo "cannot be compared against anything outside this repository."
-            exit 1
-          fi
-
-          echo "Published sha256 $published"
-          if [ "$vendored" != "$published" ]; then
-            echo "mismatch=true" >> "$GITHUB_OUTPUT"
-            echo "MISMATCH: the vendored wheel is not the published one."
-            exit 1
-          fi
-          echo "The vendored wheel is the published artifact." >> "$GITHUB_STEP_SUMMARY"
-
-      # A mismatch is a supply-chain event and gets an issue. An unpublished
-      # version is an expected state between a core release and its publication,
-      # so it fails the run and stays out of the issue tracker: one issue per
-      # week saying the same thing is a backlog, not a signal.
-      - name: Open an issue on a mismatch
-        if: failure() && steps.compare.outputs.mismatch == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.compare.outputs.version }}
-        run: |
-          title="Vendored core $VERSION does not match the published wheel"
-          existing="$(gh issue list --state open --search "$title" --json title --jq 'length')"
-          if [ "$existing" = "0" ]; then
-            gh issue create --title "$title" \
-              --label denylist \
-              --body "The weekly pin check found that vendor/mintmark-$VERSION-py3-none-any.whl does not match the wheel published for mintmark $VERSION. Do not replace the wheel to make this pass: a changed core changes emitted bytes. Establish which artifact is correct first. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          fi
-
-      - name: Record that the run happened
-        if: always()
-        run: |
-          echo "Cadence run complete. A run that finds nothing still records that" >> "$GITHUB_STEP_SUMMARY"
-          echo "it ran: silence is not evidence." >> "$GITHUB_STEP_SUMMARY"
+          actual="$(sha256sum "$RUNNER_TEMP/core-dist/$filename" | awk '{print $1}')"
+          test "$actual" = "$expected"
+          echo "Pinned core source reproduced $filename at $actual." >> "$GITHUB_STEP_SUMMARY"

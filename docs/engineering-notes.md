@@ -3,40 +3,16 @@
 Decisions a reader of the declarations would otherwise have to reverse engineer,
 and the reasoning that would be lost if only the outcome were recorded.
 
-## The core is pinned twice
+## The core wheel is bound to an immutable source revision
 
-`pack.yaml` declares `requires_core: ">=0.2,<0.3"`, which is the compatibility
-statement a consumer reads. Separately, `vendor/` carries a built core wheel with
-its SHA-256 in `vendor/CHECKSUMS`, and that is what required CI actually runs
-against, so the required checks need no network.
+`pack.yaml` requires Mintmark `>=0.3,<0.4`, while required CI installs the
+vendored `mintmark-0.3.0-py3-none-any.whl` whose SHA-256 is recorded in
+`vendor/CHECKSUMS`. The separated network workflow checks out core commit
+`499216efdc8d30ccb21d4a4a03a38b014b0ca870`, builds it with its locked backend,
+and byte-compares that independently sourced wheel with the vendored artifact.
+Repository-local checksums establish integrity; the immutable core checkout and
+reproducible comparison establish provenance.
 
-The vendored artifact at this revision is `mintmark-0.2.0-py3-none-any.whl`. Both
-`vendor/CHECKSUMS` and `uv.lock` record its digest, and both live here and move in
-the same commit as the wheel, so neither is evidence about where the wheel came
-from. The weekly `core pin` workflow is the only check that reaches outside for an
-answer: it fetches the digest PyPI publishes for that exact version and compares.
-It used to print instructions and compare nothing while declaring `issues: write`
-and opening no issue, which is the failure mode this note now exists to prevent.
-
-On a mismatch, open an issue rather than replacing the wheel: a changed core
-changes emitted bytes, which is a version event rather than a refresh. Until
-`mintmark 0.2.0` is published on PyPI the check fails, and that is the accurate
-reading of the state: a vendored core nobody else can fetch is a core nobody else
-can verify.
-
-## The vendored wheel is the published one
-
-`vendor/` carries `mintmark-0.2.0-py3-none-any.whl` at SHA-256
-`cc1584375eb5be3fa175d690064a050e5325bafd624e60ddbc745464f4d0ac29`, which is the
-digest PyPI serves for that version. The core builds with `uv build` from a
-locked backend, and that build turned out to be reproducible: the wheel built
-here before the release and the wheel the release workflow published are the same
-bytes.
-
-Do not rely on that by accident. The weekly `core pin` workflow is what actually
-holds the claim, because it fetches the published digest and compares. If a
-future build stops reproducing, that check goes red and the fix is to vendor the
-published artifact rather than to relax the check.
 ## Why a leave type carries no label
 
 `leave_record.type` is a structured enum: `yillik`, `mazeret`, `ucretsiz`,
@@ -131,10 +107,10 @@ a ceiling the other packs do not have.
 ## Regenerating the samples
 
     mintmark mint --pack . --recipe workforce-baseline --seed 1 \
-      --records employee=50 --records position_history=50 \
-      --records leave_record=50 --records payroll_entry=50 \
-      --records performance_note=50 --records recruiter_note=50 \
-      --records hr_request=50 \
+      --records employee=4 --records position_history=4 \
+      --records leave_record=8 --records payroll_entry=48 \
+      --records performance_note=4 --records recruiter_note=50 \
+      --records hr_request=4 \
       --out ./regenerated
 
 Then copy the JSONL files into `samples/`. The freshness test compares by bytes,

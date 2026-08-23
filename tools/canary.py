@@ -29,8 +29,11 @@ Exit codes: 0 clean, 1 canary found, 2 usage or configuration error.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
+import io
 import os
+import stat
 import subprocess
 import sys
 import tarfile
@@ -46,6 +49,15 @@ SKIP_DIRS = frozenset(
     {".git", ".venv", "node_modules", "__pycache__", ".mypy_cache", ".ruff_cache", ".pytest_cache"}
 )
 ARCHIVE_SUFFIXES = frozenset({".whl", ".zip", ".tar", ".gz", ".tgz"})
+CHUNK_SIZE = 64 * 1024
+MAX_FILE_BYTES = 128 * 1024 * 1024
+MAX_TOTAL_BYTES = 256 * 1024 * 1024
+MAX_ARCHIVE_MEMBERS = 10_000
+MAX_ARCHIVE_DEPTH = 3
+
+
+class ScanError(RuntimeError):
+    """The requested scan cannot be completed safely and fully."""
 
 
 def load_canary() -> str:
@@ -97,47 +109,196 @@ def tracked_files(root: Path) -> Iterator[Path]:
             yield path
 
 
-def scan_archive(path: Path, needle: bytes) -> list[str]:
+def _archive_kind(name: str) -> str | None:
+    lowered = name.lower()
+    if lowered.endswith((".whl", ".zip")):
+        return "zip"
+    if lowered.endswith((".tar.gz", ".tgz", ".tar")):
+        return "tar"
+    if lowered.endswith(".gz"):
+        return "gzip"
+    return None
+
+
+def _consume(budget: dict[str, int], size: int, display: str) -> None:
+    budget["bytes"] += size
+    if budget["bytes"] > MAX_TOTAL_BYTES:
+        raise ScanError(f"aggregate scan budget exceeded while reading {display}")
+
+
+def _read_stream(
+    handle: object,
+    needle: bytes,
+    budget: dict[str, int],
+    display: str,
+    *,
+    collect: bool,
+) -> tuple[bool, bytes | None]:
+    tail = b""
+    collected = bytearray() if collect else None
+    read_size = 0
+    found = False
+    while chunk := handle.read(CHUNK_SIZE):  # type: ignore[attr-defined]
+        read_size += len(chunk)
+        if read_size > MAX_FILE_BYTES:
+            raise ScanError(f"expanded file exceeds {MAX_FILE_BYTES}-byte limit: {display}")
+        _consume(budget, len(chunk), display)
+        found = found or needle in tail + chunk
+        if collected is not None:
+            collected.extend(chunk)
+        tail = (tail + chunk)[-(len(needle) - 1) :] if len(needle) > 1 else b""
+    return found, bytes(collected) if collected is not None else None
+
+
+def _scan_member(
+    handle: object,
+    name: str,
+    display: str,
+    needle: bytes,
+    budget: dict[str, int],
+    depth: int,
+) -> list[str]:
+    nested = _archive_kind(name)
+    found, data = _read_stream(handle, needle, budget, display, collect=nested is not None)
+    hits = [display] if found else []
+    if nested is not None:
+        if depth >= MAX_ARCHIVE_DEPTH:
+            raise ScanError(f"archive nesting exceeds depth {MAX_ARCHIVE_DEPTH}: {display}")
+        assert data is not None
+        hits.extend(scan_archive(io.BytesIO(data), needle, name, display, budget, depth + 1))
+    return hits
+
+
+def scan_archive(
+    source: Path | io.BytesIO,
+    needle: bytes,
+    name: str | None = None,
+    display: str | None = None,
+    budget: dict[str, int] | None = None,
+    depth: int = 0,
+) -> list[str]:
+    name = name or str(source)
+    display = display or str(source)
+    budget = budget or {"bytes": 0, "members": 0}
     hits: list[str] = []
+    kind = _archive_kind(name)
     try:
-        if path.suffix in {".whl", ".zip"}:
-            with zipfile.ZipFile(path) as zf:
-                for name in zf.namelist():
-                    if needle in zf.read(name):
-                        hits.append(f"{path}::{name}")
-        elif path.name.endswith((".tar.gz", ".tgz", ".tar")):
-            with tarfile.open(path) as tf:
-                for member in tf.getmembers():
+        if kind == "zip":
+            with zipfile.ZipFile(source) as archive:
+                for member in archive.infolist():
+                    if member.is_dir():
+                        continue
+                    member_display = f"{display}::{member.filename}"
+                    budget["members"] += 1
+                    if budget["members"] > MAX_ARCHIVE_MEMBERS:
+                        raise ScanError(f"archive member budget exceeded: {member_display}")
+                    if member.file_size > MAX_FILE_BYTES:
+                        raise ScanError(f"archive member exceeds size limit: {member_display}")
+                    if needle in member.filename.encode("utf-8", errors="surrogateescape"):
+                        hits.append(member_display)
+                    with archive.open(member) as handle:
+                        hits.extend(
+                            _scan_member(
+                                handle, member.filename, member_display, needle, budget, depth
+                            )
+                        )
+        elif kind == "tar":
+            fileobj = source if isinstance(source, io.BytesIO) else None
+            filename = None if fileobj is not None else str(source)
+            with tarfile.open(name=filename, fileobj=fileobj, mode="r:*") as archive:
+                for member in archive:
+                    member_display = f"{display}::{member.name}"
+                    if member.issym() or member.islnk():
+                        raise ScanError(f"refusing archive link: {member_display}")
                     if not member.isfile():
                         continue
-                    handle = tf.extractfile(member)
-                    if handle is not None and needle in handle.read():
-                        hits.append(f"{path}::{member.name}")
-    except (zipfile.BadZipFile, tarfile.TarError, OSError) as exc:
-        raise SystemExit(f"canary: cannot read archive {path}: {exc}") from exc
+                    budget["members"] += 1
+                    if budget["members"] > MAX_ARCHIVE_MEMBERS:
+                        raise ScanError(f"archive member budget exceeded: {member_display}")
+                    if member.size > MAX_FILE_BYTES:
+                        raise ScanError(f"archive member exceeds size limit: {member_display}")
+                    if needle in member.name.encode("utf-8", errors="surrogateescape"):
+                        hits.append(member_display)
+                    handle = archive.extractfile(member)
+                    if handle is None:
+                        raise ScanError(f"cannot read archive member: {member_display}")
+                    with handle:
+                        hits.extend(
+                            _scan_member(handle, member.name, member_display, needle, budget, depth)
+                        )
+        elif kind == "gzip":
+            fileobj = source if isinstance(source, io.BytesIO) else None
+            filename = None if fileobj is not None else str(source)
+            with gzip.GzipFile(filename=filename, fileobj=fileobj, mode="rb") as handle:
+                hits.extend(
+                    _scan_member(handle, name[:-3], f"{display}::gzip", needle, budget, depth)
+                )
+        else:
+            raise ScanError(f"unsupported archive type: {display}")
+    except (gzip.BadGzipFile, zipfile.BadZipFile, tarfile.TarError, EOFError, OSError) as exc:
+        raise ScanError(f"cannot read archive {display}: {exc}") from exc
     return hits
 
 
 def scan(root: Path, canary: str) -> list[str]:
     needle = canary.encode("utf-8")
     hits: list[str] = []
+    budget = {"bytes": 0, "members": 0}
 
-    if root.is_file():
+    root = root.absolute()
+    try:
+        root_mode = root.lstat().st_mode
+    except OSError as exc:
+        raise ScanError(f"cannot inspect scan target {root}: {exc}") from exc
+    if stat.S_ISLNK(root_mode):
+        raise ScanError(f"refusing symlink scan target: {root}")
+
+    if stat.S_ISREG(root_mode):
+        inventory_root = root.parent
         targets: Iterator[Path] = iter([root])
-    else:
+    elif stat.S_ISDIR(root_mode):
+        inventory_root = root
         targets = tracked_files(root)
+    else:
+        raise ScanError(f"refusing non-file scan target: {root}")
 
+    resolved_root = inventory_root.resolve(strict=True)
     for path in targets:
-        if not path.is_file():
-            continue
-        if path.suffix in ARCHIVE_SUFFIXES or path.name.endswith(".tar.gz"):
-            hits.extend(scan_archive(path, needle))
+        path = path.absolute()
+        try:
+            relative = path.relative_to(inventory_root)
+        except ValueError as exc:
+            raise ScanError(f"path escapes scan root: {path}") from exc
+        current = inventory_root
+        for part in relative.parts:
+            current /= part
+            try:
+                mode = current.lstat().st_mode
+            except OSError as exc:
+                raise ScanError(f"cannot inspect {current}: {exc}") from exc
+            if stat.S_ISLNK(mode):
+                raise ScanError(f"refusing symlink in scan inventory: {current}")
+        try:
+            resolved = path.resolve(strict=True)
+        except OSError as exc:
+            raise ScanError(f"cannot resolve {path}: {exc}") from exc
+        if not resolved.is_relative_to(resolved_root):
+            raise ScanError(f"resolved path escapes scan root: {path}")
+        metadata = path.lstat()
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ScanError(f"refusing non-regular scan target: {path}")
+        if metadata.st_size > MAX_FILE_BYTES:
+            raise ScanError(f"file exceeds {MAX_FILE_BYTES}-byte scan limit: {path}")
+        if _archive_kind(path.name) is not None:
+            hits.extend(scan_archive(path, needle, budget=budget))
             continue
         try:
-            if needle in path.read_bytes():
+            with path.open("rb") as handle:
+                found, _ = _read_stream(handle, needle, budget, str(path), collect=False)
+            if found:
                 hits.append(str(path))
-        except OSError:
-            continue
+        except OSError as exc:
+            raise ScanError(f"cannot read {path}: {exc}") from exc
     return hits
 
 
@@ -172,12 +333,16 @@ def main(argv: list[str] | None = None) -> int:
     verify_digest(canary)
 
     all_hits: list[str] = []
-    for target in args.targets or ["."]:
-        path = Path(target).resolve()
-        if not path.exists():
-            print(f"canary: no such path: {path}", file=sys.stderr)
-            return 2
-        all_hits.extend(scan(path, canary))
+    try:
+        for target in args.targets or ["."]:
+            path = Path(target).absolute()
+            if not path.exists() and not path.is_symlink():
+                print(f"canary: no such path: {path}", file=sys.stderr)
+                return 2
+            all_hits.extend(scan(path, canary))
+    except ScanError as exc:
+        print(f"canary: {exc}", file=sys.stderr)
+        return 2
 
     if all_hits:
         print("canary: private-corpus canary found in:", file=sys.stderr)

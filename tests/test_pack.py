@@ -11,8 +11,8 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-import tempfile
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -72,11 +72,8 @@ def test_the_pack_name_matches_the_repository() -> None:
 
 def test_the_core_pin_has_a_closed_upper_bound() -> None:
     """An open pin means a core minor release can silently change our output."""
-    assert PACK.requires_core.contains("0.2.0")
-    assert not PACK.requires_core.contains("0.3.0")
-    assert not PACK.requires_core.contains("0.1.3"), (
-        "0.1.x moved emitted bytes relative to 0.2.0; a pin that spans both is not a pin"
-    )
+    assert PACK.requires_core.contains("0.3.0")
+    assert not PACK.requires_core.contains("0.4.0")
 
 
 def test_the_locale_is_turkish() -> None:
@@ -87,6 +84,7 @@ def test_the_locale_is_turkish() -> None:
 
 STRUCTURED = ("employee", "position_history", "leave_record", "payroll_entry")
 DOCUMENTS = ("performance_note", "recruiter_note", "hr_request")
+EVALUATION_DOCUMENTS = tuple(f"{name}_eval" for name in DOCUMENTS)
 
 
 def test_the_four_structured_record_types_exist() -> None:
@@ -154,7 +152,7 @@ def test_birth_dates_declare_a_working_age_window() -> None:
     assert span == [18, 65], span
 
 
-def _field(type_name: str, field_name: str):  # noqa: ANN202 - the core's Field type
+def _field(type_name: str, field_name: str):
     record_type = next(t for t in PACK.record_types if t.type_name == type_name)
     return next(f for f in record_type.fields if f.name == field_name)
 
@@ -211,7 +209,7 @@ def test_no_template_names_a_real_company() -> None:
 # Recipes.
 
 
-def test_the_two_named_recipes_exist() -> None:
+def test_the_named_recipes_exist() -> None:
     assert set(PACK.recipes) == {"workforce-baseline", "pii-eval"}
 
 
@@ -272,32 +270,16 @@ def minted(tmp_path_factory: pytest.TempPathFactory) -> Path:
     return out
 
 
-
 @pytest.fixture(scope="module")
-def minted_eval(tmp_path_factory: pytest.TempPathFactory) -> Path:
-    """The evaluation recipe, where every special-category label is guaranteed.
-
-    The baseline runs its special rate at 0.06, so a small baseline mint can
-    produce no CRIMINAL span at all, and a boundary check that saw no span proved
-    nothing while passing. The boundary checks run against the recipe that puts
-    the surfaces there on purpose.
-    """
-    out = tmp_path_factory.mktemp("pack") / "eval"
+def evaluation_minted(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    """Render the complete evaluation recipe so safety checks see every family."""
+    out = tmp_path_factory.mktemp("evaluation-pack") / "run"
     mint(
         pack=ROOT,
         recipe="pii-eval",
-        seed=2,
+        seed=20261102,
         out=out,
-        records={
-            "employee": 60,
-            "position_history": 60,
-            "leave_record": 60,
-            "payroll_entry": 60,
-            "performance_note_eval": 120,
-            "recruiter_note_eval": 120,
-            "hr_request_eval": 120,
-        },
-        invocation="pytest",
+        invocation="pytest safety gate",
     )
     return out
 
@@ -338,8 +320,13 @@ def test_every_reference_resolves(minted: Path) -> None:
         }
 
     employees = ids("employee")
-    for child in ("position_history", "leave_record", "payroll_entry", "performance_note",
-                  "hr_request"):
+    for child in (
+        "position_history",
+        "leave_record",
+        "payroll_entry",
+        "performance_note",
+        "hr_request",
+    ):
         for line in (minted / f"{child}.jsonl").read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
@@ -398,7 +385,15 @@ def test_packcheck_passes_against_the_pinned_core() -> None:
 
 # Sample freshness.
 
-SAMPLE_COUNTS = dict.fromkeys([*STRUCTURED, *DOCUMENTS], 50)
+SAMPLE_COUNTS = {
+    "employee": 4,
+    "position_history": 4,
+    "leave_record": 8,
+    "payroll_entry": 48,
+    "performance_note": 4,
+    "recruiter_note": 50,
+    "hr_request": 4,
+}
 
 
 def test_samples_regenerate_to_the_same_bytes(tmp_path: Path) -> None:
@@ -449,7 +444,7 @@ def _terms(path: Path) -> list[str]:
     ]
 
 
-def _as_denylist(path: Path, note: str):  # noqa: ANN202 - the core's Denylist type
+def _as_denylist(path: Path, note: str):
     return parse_denylist("\n".join(f"{term}    # {note}" for term in _terms(path)))
 
 
@@ -472,12 +467,34 @@ def test_no_rendered_document_contains_denied_clinical_vocabulary(minted: Path) 
     assert not offenders, "\n".join(offenders[:10])
 
 
-def test_every_health_span_draws_from_the_core_condition_classes(minted_eval: Path) -> None:
+def test_all_evaluation_documents_respect_sensitive_language_boundaries(
+    evaluation_minted: Path,
+) -> None:
+    for denylist_path, note in (
+        (CLINICAL_DENIED, "clinical"),
+        (ACCUSATORY_DENIED, "accusatory"),
+    ):
+        denied = _as_denylist(denylist_path, f"denied {note} vocabulary")
+        offenders = [
+            f"{name}: {hit.entry!r}"
+            for name in EVALUATION_DOCUMENTS
+            for line in (evaluation_minted / f"{name}.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+            for hit in denied.scan(json.loads(line)["body"])
+        ]
+        assert not offenders, "\n".join(offenders[:10])
+
+
+def test_every_health_span_draws_from_the_core_condition_classes(
+    evaluation_minted: Path,
+) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(minted_eval, "HEALTH", set(core_descriptors(Label.HEALTH)))
+    _assert_spans_are_curated(evaluation_minted, "HEALTH", set(core_descriptors(Label.HEALTH)))
 
 
 # The accusatory boundary, which only this pack owns.
@@ -508,21 +525,30 @@ def test_no_rendered_document_accuses_anyone(minted: Path) -> None:
 
 
 def test_no_template_source_crosses_either_boundary() -> None:
-    """Catch it in the template rather than waiting for a draw to surface it."""
-    text = "\n".join(
-        p.read_text(encoding="utf-8") for p in sorted((ROOT / "templates").rglob("*.yaml"))
-    )
+    """Scan decoded template values, including YAML escape sequences."""
+    texts = [
+        entry["text"]
+        for path in sorted((ROOT / "templates").rglob("*.yaml"))
+        for entry in yaml.safe_load(path.read_text(encoding="utf-8"))["entries"]
+    ]
     for path, note in ((CLINICAL_DENIED, "clinical"), (ACCUSATORY_DENIED, "accusatory")):
-        hits = [hit.entry for hit in _as_denylist(path, note).scan(text)]
+        hits = [hit.entry for text in texts for hit in _as_denylist(path, note).scan(text)]
         assert not hits, f"a template carries denied {note} vocabulary: {hits}"
 
 
-def test_every_criminal_span_draws_from_the_core_document_names(minted_eval: Path) -> None:
+@pytest.mark.parametrize("obfuscated", ["te\u200bşhis", "tes\u0327his"])
+def test_unicode_obfuscation_cannot_bypass_clinical_controls(obfuscated: str) -> None:
+    assert _as_denylist(CLINICAL_DENIED, "clinical").scan(obfuscated)
+
+
+def test_every_criminal_span_draws_from_the_core_document_names(
+    evaluation_minted: Path,
+) -> None:
     """The CRIMINAL surface names a document, never an allegation."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(minted_eval, "CRIMINAL", set(core_descriptors(Label.CRIMINAL)))
+    _assert_spans_are_curated(evaluation_minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL)))
 
 
 @pytest.mark.parametrize(
@@ -534,7 +560,9 @@ def test_every_criminal_span_draws_from_the_core_document_names(minted_eval: Pat
 )
 def test_each_denied_list_would_catch_a_planted_term(path: Path, planted: str) -> None:
     """A control that has never rejected anything is not known to reject anything."""
-    assert _as_denylist(path, "denied").scan(planted), f"{path.name} no longer catches an obvious term"
+    assert _as_denylist(path, "denied").scan(planted), (
+        f"{path.name} no longer catches an obvious term"
+    )
 
 
 def _assert_spans_are_curated(minted: Path, label: str, allowed: set[str]) -> None:
@@ -642,16 +670,18 @@ def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     real state too, and the README may hold it by saying so.
     """
     text = path.read_text(encoding="utf-8")
-    linked = set(re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text))
-    assert linked <= {PACK.version}, (
-        f"{path.name} links releases {sorted(linked - {PACK.version})} while the pack "
-        f"is {PACK.version}. A link to a superseded tag reads as current."
-    )
-    if PACK.version not in linked:
-        assert "not tagged yet" in text or "henüz etiketlenmedi" in text, (
-            f"{path.name} neither links v{PACK.version} nor says it is untagged. A "
-            "version prepared but not cut is a real state and has to be stated."
+    assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
+    development = "under development" in text or "geliştirme aşamasındadır" in text
+    current_release = f"/releases/tag/v{PACK.version}" in text
+    assert development or current_release
+    linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
+    assert linked, f"{path.name} no longer links the latest published release"
+    if development:
+        assert PACK.version not in linked, (
+            "an unreleased version must not be presented as published"
         )
+    else:
+        assert PACK.version in linked, "the current release is not the linked published version"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
@@ -667,8 +697,7 @@ def test_each_readme_installs_the_engine_from_where_it_now_lives(path: Path) -> 
         f"{path.name} does not link the published engine"
     )
     assert "git+https://github.com/lokomotifai/mintmark" not in text, (
-        f"{path.name} still installs from git, which was the workaround for not "
-        f"being on an index"
+        f"{path.name} still installs from git, which was the workaround for not being on an index"
     )
 
 
@@ -721,9 +750,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
     )
     manifest = rolled_back / "pack.yaml"
     manifest.write_text(
-        manifest.read_text(encoding="utf-8").replace(
-            f"version: {PACK.version}", "version: 9.9.9"
-        ),
+        manifest.read_text(encoding="utf-8").replace(f"version: {PACK.version}", "version: 9.9.9"),
         encoding="utf-8",
     )
 
@@ -733,7 +760,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
         recipe="workforce-baseline",
         seed=1,
         out=out,
-        records={"employee": 20},
+        records=SAMPLE_COUNTS,
         invocation="pytest",
     )
     changed = (out / "employee.jsonl").read_bytes()
@@ -824,9 +851,15 @@ def evaluation_mint(tmp_path_factory: pytest.TempPathFactory) -> Path:
         recipe="pii-eval",
         seed=11,
         out=out,
-        records={"employee": 40, "position_history": 40, "leave_record": 40,
-            "payroll_entry": 40, "performance_note_eval": 200,
-            "recruiter_note_eval": 0, "hr_request_eval": 0},
+        records={
+            "employee": 100,
+            "position_history": 100,
+            "leave_record": 200,
+            "payroll_entry": 1200,
+            "performance_note_eval": 200,
+            "recruiter_note_eval": 0,
+            "hr_request_eval": 0,
+        },
         invocation="pytest",
     )
     return out
@@ -837,7 +870,9 @@ def test_the_evaluation_documents_are_not_one_sentence_repeated(evaluation_mint:
     entity at a fixed offset behind a fixed cue word. A gazetteer and six regular
     expressions scored near perfectly on it, which says nothing about production."""
     bodies = {}
-    for line in (evaluation_mint / "performance_note_eval.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in (
+        (evaluation_mint / "performance_note_eval.jsonl").read_text(encoding="utf-8").splitlines()
+    ):
         if line.strip():
             record = json.loads(line)
             key = next(v for k, v in record.items() if k.endswith("_id"))

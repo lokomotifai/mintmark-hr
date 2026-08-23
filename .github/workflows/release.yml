@@ -1,31 +1,135 @@
-# DISABLED. This workflow does not run.
-#
-# A release from this repository carries reference datasets, which are the thing
-# consumers actually take. Publishing them is an external authorization
-# checkpoint, and so is confirming the dataset license.
-#
-# This file exists so that the release mechanics are reviewable before they are
-# ever executed, and so that enabling them is a visible single change rather than
-# new machinery written under time pressure.
-name: release (disabled)
+# Publish reproducible reference datasets from protected main only. The private
+# corpus canary is exposed only to reviewed repository code, never pull requests.
+name: release
 
 on:
   workflow_dispatch:
     inputs:
-      confirm:
-        description: "This workflow is disabled pending authorization. Do not run."
+      version:
+        description: "Pack version to release"
         required: true
+        default: "0.2.0"
+        type: string
+      confirm:
+        description: "Type RELEASE v0.2.0"
+        required: true
+        type: string
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: release-${{ inputs.version }}
+  cancel-in-progress: false
 
 jobs:
-  blocked:
-    name: refuse to run
+  build:
+    name: build, verify, and scan release bytes
     runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
     steps:
-      - name: Refuse
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          enable-cache: false
+          version: "0.12.3"
+      - name: Verify the release request
+        env:
+          RELEASE_CONFIRMATION: ${{ inputs.confirm }}
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
-          echo "The release workflow is disabled pending the publication checkpoint."
-          echo "See the comment block at the top of this file."
-          exit 1
+          set -euo pipefail
+          declared="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          project="$(awk -F'"' '/^version = / {print $2; exit}' pyproject.toml)"
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$REQUESTED_VERSION" = "$declared"
+          test "$project" = "$declared"
+          test "$RELEASE_CONFIRMATION" = "RELEASE v$declared"
+      - name: Verify the vendored core before trusting it
+        run: cd vendor && shasum -a 256 -c CHECKSUMS
+      - run: uv sync --locked
+      - run: uv run ruff format --check .
+      - run: uv run ruff check .
+      - run: uv run mintmark packcheck .
+      - run: uv run pytest -ra
+      - run: uv run python tools/mdlint.py .
+      - name: Build and verify the reference datasets
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          mkdir -p dist
+          for spec in workforce-baseline:20261101 pii-eval:20261102; do
+            recipe="${spec%%:*}"
+            seed="${spec##*:}"
+            output="dist/$recipe"
+            artifact="dist/$pack-$version-$recipe.tar.gz"
+            uv run mintmark mint --pack . --recipe "$recipe" --seed "$seed" --out "$output"
+            uv run mintmark verify "$output"
+            tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 \
+              --numeric-owner -czf "$artifact" -C dist "$recipe"
+            test -s "$artifact"
+          done
+      - name: Scan source and exact release artifacts for the private canary
+        env:
+          MINTMARK_CANARY: ${{ secrets.MINTMARK_CANARY }}
+        run: |
+          set -euo pipefail
+          pack="$(awk '/^name:/ {print $2; exit}' pack.yaml)"
+          version="$(awk '/^version:/ {print $2; exit}' pack.yaml)"
+          artifacts=(
+            "dist/$pack-$version-workforce-baseline.tar.gz"
+            "dist/$pack-$version-pii-eval.tar.gz"
+          )
+          uv run python tools/canary.py . "${artifacts[@]}"
+          cd dist
+          sha256sum "$pack-$version-workforce-baseline.tar.gz" \
+            "$pack-$version-pii-eval.tar.gz" > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-assets
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            dist/mintmark-hr-*.tar.gz
+            dist/SHA256SUMS
+
+  publish:
+    name: attest and publish the GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-assets
+          path: release-assets/
+      - name: Verify the bytes approved by the build job
+        run: cd release-assets && sha256sum -c SHA256SUMS
+      - name: Attest the reference datasets
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-path: release-assets/*.tar.gz
+      - name: Create the immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          tag="v$VERSION"
+          gh release view "$tag" >/dev/null 2>&1 && {
+            echo "::error::release $tag already exists"
+            exit 1
+          }
+          gh release create "$tag" \
+            release-assets/*.tar.gz \
+            release-assets/SHA256SUMS \
+            --target "$GITHUB_SHA" \
+            --title "Mintmark HR $tag" \
+            --generate-notes
