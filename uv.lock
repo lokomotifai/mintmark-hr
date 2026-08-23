@@ -65,7 +65,7 @@ dependencies = [
     { name = "pyyaml" },
 ]
 wheels = [
-    { filename = "mintmark-0.3.0-py3-none-any.whl", hash = "sha256:c105adcc8a4f63496723629526836e6a39489604832d512f22d9c5580662cb76" },
+    { filename = "mintmark-0.3.0-py3-none-any.whl", hash = "sha256:f4346216b85f2110ad4171da1bddc1ef57f905717bf3ffffccb68bdcd1f9f158" },
 ]
 
 [package.metadata]

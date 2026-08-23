@@ -7,7 +7,7 @@ fields:
   - name: employee_id
     type: ref
     generator: seq_id
-    ref: {parent: employee, counts: [1], weights: ["1"]}
+    ref: {parent: employee, counts: [1, 2], weights: ["0.70", "0.30"]}
     pii_label: none
   - name: author_role
     type: enum

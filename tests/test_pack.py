@@ -379,7 +379,15 @@ def test_packcheck_passes_against_the_pinned_core() -> None:
 
 # Sample freshness.
 
-SAMPLE_COUNTS = dict.fromkeys([*STRUCTURED, *DOCUMENTS], 50)
+SAMPLE_COUNTS = {
+    "employee": 4,
+    "position_history": 4,
+    "leave_record": 8,
+    "payroll_entry": 48,
+    "performance_note": 4,
+    "recruiter_note": 50,
+    "hr_request": 4,
+}
 
 
 def test_samples_regenerate_to_the_same_bytes(tmp_path: Path) -> None:
@@ -749,7 +757,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
         recipe="workforce-baseline",
         seed=1,
         out=out,
-        records={"employee": 20},
+        records=SAMPLE_COUNTS,
         invocation="pytest",
     )
     changed = (out / "employee.jsonl").read_bytes()

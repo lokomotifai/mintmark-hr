@@ -8,7 +8,7 @@ and the reasoning that would be lost if only the outcome were recorded.
 `pack.yaml` requires Mintmark `>=0.3,<0.4`, while required CI installs the
 vendored `mintmark-0.3.0-py3-none-any.whl` whose SHA-256 is recorded in
 `vendor/CHECKSUMS`. The separated network workflow checks out core commit
-`daf9f1468e86dc078d9d0513fa53a219cd7412d0`, builds it with its locked backend,
+`499216efdc8d30ccb21d4a4a03a38b014b0ca870`, builds it with its locked backend,
 and byte-compares that independently sourced wheel with the vendored artifact.
 Repository-local checksums establish integrity; the immutable core checkout and
 reproducible comparison establish provenance.
@@ -107,10 +107,10 @@ a ceiling the other packs do not have.
 ## Regenerating the samples
 
     mintmark mint --pack . --recipe workforce-baseline --seed 1 \
-      --records employee=50 --records position_history=50 \
-      --records leave_record=50 --records payroll_entry=50 \
-      --records performance_note=50 --records recruiter_note=50 \
-      --records hr_request=50 \
+      --records employee=4 --records position_history=4 \
+      --records leave_record=8 --records payroll_entry=48 \
+      --records performance_note=4 --records recruiter_note=50 \
+      --records hr_request=4 \
       --out ./regenerated
 
 Then copy the JSONL files into `samples/`. The freshness test compares by bytes,

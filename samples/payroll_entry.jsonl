@@ -46,5 +46,3 @@
 {"entry_id":"PRL-00000045","employee_id":"EMP-00000003","payment_date":"2026-03-02","gross_kurus":934774,"net_kurus":673037,"payment_iban":"TR389999909920189978128987","anomaly_kind":"none","is_anomaly":false}
 {"entry_id":"PRL-00000046","employee_id":"EMP-00000003","payment_date":"2026-12-20","gross_kurus":1029872,"net_kurus":741507,"payment_iban":"TR889999900385174848115205","anomaly_kind":"mukerrer_odeme","is_anomaly":true}
 {"entry_id":"PRL-00000047","employee_id":"EMP-00000003","payment_date":"2026-05-13","gross_kurus":13213648,"net_kurus":9513826,"payment_iban":"TR339999906768566499049577","anomaly_kind":"none","is_anomaly":false}
-{"entry_id":"PRL-00000048","employee_id":"EMP-00000004","payment_date":"2026-07-06","gross_kurus":1178909,"net_kurus":848814,"payment_iban":"TR169999905506277578738191","anomaly_kind":"none","is_anomaly":false}
-{"entry_id":"PRL-00000049","employee_id":"EMP-00000004","payment_date":"2026-11-17","gross_kurus":2100870,"net_kurus":1512626,"payment_iban":"TR259999907127201999106157","anomaly_kind":"none","is_anomaly":false}

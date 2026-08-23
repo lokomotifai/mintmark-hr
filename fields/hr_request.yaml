@@ -7,7 +7,7 @@ fields:
   - name: employee_id
     type: ref
     generator: seq_id
-    ref: {parent: employee, counts: [1], weights: ["1"]}
+    ref: {parent: employee, counts: [0, 1], weights: ["0.20", "0.80"]}
     pii_label: none
   - name: channel
     type: enum
