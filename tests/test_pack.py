@@ -320,8 +320,13 @@ def test_every_reference_resolves(minted: Path) -> None:
         }
 
     employees = ids("employee")
-    for child in ("position_history", "leave_record", "payroll_entry", "performance_note",
-                  "hr_request"):
+    for child in (
+        "position_history",
+        "leave_record",
+        "payroll_entry",
+        "performance_note",
+        "hr_request",
+    ):
         for line in (minted / f"{child}.jsonl").read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
@@ -489,9 +494,7 @@ def test_every_health_span_draws_from_the_core_condition_classes(
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(
-        evaluation_minted, "HEALTH", set(core_descriptors(Label.HEALTH))
-    )
+    _assert_spans_are_curated(evaluation_minted, "HEALTH", set(core_descriptors(Label.HEALTH)))
 
 
 # The accusatory boundary, which only this pack owns.
@@ -529,11 +532,7 @@ def test_no_template_source_crosses_either_boundary() -> None:
         for entry in yaml.safe_load(path.read_text(encoding="utf-8"))["entries"]
     ]
     for path, note in ((CLINICAL_DENIED, "clinical"), (ACCUSATORY_DENIED, "accusatory")):
-        hits = [
-            hit.entry
-            for text in texts
-            for hit in _as_denylist(path, note).scan(text)
-        ]
+        hits = [hit.entry for text in texts for hit in _as_denylist(path, note).scan(text)]
         assert not hits, f"a template carries denied {note} vocabulary: {hits}"
 
 
@@ -549,9 +548,7 @@ def test_every_criminal_span_draws_from_the_core_document_names(
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
-    _assert_spans_are_curated(
-        evaluation_minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL))
-    )
+    _assert_spans_are_curated(evaluation_minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL)))
 
 
 @pytest.mark.parametrize(
@@ -674,10 +671,17 @@ def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     """
     text = path.read_text(encoding="utf-8")
     assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
-    assert "under development" in text or "geliştirme aşamasındadır" in text
+    development = "under development" in text or "geliştirme aşamasındadır" in text
+    current_release = f"/releases/tag/v{PACK.version}" in text
+    assert development or current_release
     linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
     assert linked, f"{path.name} no longer links the latest published release"
-    assert PACK.version not in linked, "an unreleased version must not be presented as published"
+    if development:
+        assert PACK.version not in linked, (
+            "an unreleased version must not be presented as published"
+        )
+    else:
+        assert PACK.version in linked, "the current release is not the linked published version"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
@@ -693,8 +697,7 @@ def test_each_readme_installs_the_engine_from_where_it_now_lives(path: Path) -> 
         f"{path.name} does not link the published engine"
     )
     assert "git+https://github.com/lokomotifai/mintmark" not in text, (
-        f"{path.name} still installs from git, which was the workaround for not "
-        f"being on an index"
+        f"{path.name} still installs from git, which was the workaround for not being on an index"
     )
 
 
@@ -747,9 +750,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
     )
     manifest = rolled_back / "pack.yaml"
     manifest.write_text(
-        manifest.read_text(encoding="utf-8").replace(
-            f"version: {PACK.version}", "version: 9.9.9"
-        ),
+        manifest.read_text(encoding="utf-8").replace(f"version: {PACK.version}", "version: 9.9.9"),
         encoding="utf-8",
     )
 
@@ -870,9 +871,7 @@ def test_the_evaluation_documents_are_not_one_sentence_repeated(evaluation_mint:
     expressions scored near perfectly on it, which says nothing about production."""
     bodies = {}
     for line in (
-        (evaluation_mint / "performance_note_eval.jsonl")
-        .read_text(encoding="utf-8")
-        .splitlines()
+        (evaluation_mint / "performance_note_eval.jsonl").read_text(encoding="utf-8").splitlines()
     ):
         if line.strip():
             record = json.loads(line)
