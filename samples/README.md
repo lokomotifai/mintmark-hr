@@ -1,16 +1,20 @@
 # Samples
 
-Fifty records per type, committed so that a reader can see the shape of this
-pack's output without minting anything.
+Up to fifty records per type, committed so that a reader can see the shape of
+this pack's output without minting anything. The counts follow the pack's
+relationship bounds: every employee must carry its declared minimum of leave
+records and payroll entries, so the employee-anchored types are minted at four
+parents and at what four parents require, while the unanchored recruiter notes
+are minted at fifty.
 
 These regenerate exactly:
 
 ```bash
 mintmark mint --pack . --recipe workforce-baseline --seed 1 \
-  --records employee=50 --records position_history=50 \
-  --records leave_record=50 --records payroll_entry=50 \
-  --records performance_note=50 --records recruiter_note=50 \
-  --records hr_request=50 \
+  --records employee=4 --records position_history=4 \
+  --records leave_record=8 --records payroll_entry=48 \
+  --records performance_note=4 --records recruiter_note=50 \
+  --records hr_request=4 \
   --out ./regenerated
 ```
 
