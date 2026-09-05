@@ -15,6 +15,19 @@ from, so raising the version is itself such a change. Version and content
 correspond exactly, which is the point. The pack digest is a separate record of
 which declarations produced a dataset and seeds nothing.
 
+## Unreleased
+
+### Changed
+
+- Vendor the published Mintmark 0.3.3 wheel, byte-identical to the PyPI and
+  GitHub release artifacts, and pin the weekly source rebuild to the v0.3.3
+  commit. The 0.3.3 engine moves no bytes, so every recipe reproduces the same
+  output. Tests import the composition root by its new name,
+  `mintmark.minting`.
+- `samples/README.md` shows the record counts that regenerate the committed
+  samples. The previous command asked for fifty of every type, which the
+  pack's relationship bounds refuse.
+
 ## 0.2.0 - 2026-08-23
 
 ### Security

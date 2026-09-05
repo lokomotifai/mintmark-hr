@@ -20,7 +20,7 @@ import yaml
 from mintmark.annotate import ALL_LABELS
 from mintmark.lexicons import load as load_denylist
 from mintmark.lexicons import parse as parse_denylist
-from mintmark.mint import MintError, asset_dir, mint
+from mintmark.minting import MintError, asset_dir, mint
 from mintmark.packs.model import load_pack
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -493,7 +493,7 @@ def test_every_health_span_draws_from_the_core_condition_classes(
 ) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
-    from mintmark.mint import core_descriptors
+    from mintmark.minting import core_descriptors
 
     _assert_spans_are_curated(evaluation_minted, "HEALTH", set(core_descriptors(Label.HEALTH)))
 
@@ -547,7 +547,7 @@ def test_every_criminal_span_draws_from_the_core_document_names(
 ) -> None:
     """The CRIMINAL surface names a document, never an allegation."""
     from mintmark.annotate import Label
-    from mintmark.mint import core_descriptors
+    from mintmark.minting import core_descriptors
 
     _assert_spans_are_curated(evaluation_minted, "CRIMINAL", set(core_descriptors(Label.CRIMINAL)))
 
