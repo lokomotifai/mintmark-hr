@@ -12,7 +12,7 @@ dev = [
   "mintmark",
   "pytest>=8.3,<10",
   "pyyaml>=6.0,<7",
-  "ruff>=0.14,<0.17",
+  "ruff>=0.14,<0.18",
 ]
 
 [tool.uv.sources]
